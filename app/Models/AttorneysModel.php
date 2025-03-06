@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\UserPermissionModel;
+
+class AttorneysModel extends Model
+{
+    use HasFactory;
+    protected $table="attorneys";
+    protected $fillable=[
+        'attorneys_name',
+        'gender',
+        'email',
+        'phone_number',
+        'specialization',
+        'license_number', 
+        'bar_admission_date', 
+        'profile_picture',
+        'bio',
+        'created_at',
+        'updated_at',
+        'status'
+    ];
+    public function trademarkUsers()
+{
+    return $this->hasMany(TrademarkUserModel::class, 'attorney_id'); 
+}
+public function permissions()
+{
+    return $this->belongsToMany(UserPermissionModel::class);
+}
+}
