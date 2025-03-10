@@ -20,26 +20,31 @@ class ExcelsImport extends Controller
 {
 
 public function ClientsImport(Request $request){
-  
-        // Validate the trimmed data
-        $trimmedData = $request->all();
-        array_walk_recursive($trimmedData, function (&$value) {
-            $value = is_string($value) ? trim($value) : $value;
-        });
-
-        $validator = Validator::make($trimmedData, [
-            'category_slug' => 'required|string',
-            'excel_file' => 'required|mimes:xls,xlsx',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
+    if ($request->hasFile('excel_file')) {
+        $file = $request->file('excel_file');
+    
+        // Sirf CSV file allow karein
+        if ($file->getClientOriginalExtension() != 'csv') {
+            return back()->with('error', 'Please upload a valid CSV file.');
         }
-
-        Log::info($request->file('excel_file'));
-        Excel::import(new ClientsImport, $request->file('excel_file'));
+    
+        $importdata = [];
+        if (($handle = fopen($file, "r")) !== FALSE) {
+            $row = 0;
+            $tablehead = [];
+            
+            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                if ($row == 0) {
+                    $tablehead = $data; // Pehli row headings ke liye
+                } else {
+                    $importdata[] = array_combine($tablehead, $data); // Tablehead ko keys banakar row ko associative array banao
+                }
+                $row++;
+            }
+            fclose($handle);
+        }
+        return view('admin_panel.reports.Add.importusers-preview',compact('tablehead','importdata'));
+    }
 }
 public function ClientsExcelExport(Request $request){
         

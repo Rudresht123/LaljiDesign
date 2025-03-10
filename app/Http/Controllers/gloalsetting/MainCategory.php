@@ -4,6 +4,7 @@ namespace App\Http\Controllers\gloalsetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\MainCategoryModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,8 @@ class MainCategory extends Controller
      */
     public function index()
     {
-        return view('admin_panel.global_setting.mainCategory.index');
+        $categorys=(new GlobalSettingRepo())->maincategory();
+        return view('admin_panel.global_setting.define-main-category',compact('categorys'));
     }
 
     /**
@@ -32,48 +34,41 @@ class MainCategory extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->input('category_slug'));
-        $Validator=Validator::make($request->all(),[
-            'category_name'=>'required|string',
-            'remark'=>'required|string',
-            'status'=>'required',
-              'category_icon' => 'nullable|file|mimes:jpg,png,jpeg,gif|max:5048',
-            'category_slug'=>'required|string'
-            
+        $Validator = Validator::make($request->all(), [
+            'category_name' => 'required|string',
+            'remark' => 'required|string',
+            'status' => 'required',
+            'category_icon' => 'nullable|file|mimes:jpg,png,jpeg,gif|max:5048',
+            'category_slug' => 'required|string'
+
         ]);
 
-        if($Validator->fails())
-        {
+        if ($Validator->fails()) {
             return response()->json([
-                'errors'=>$Validator->errors()
-            ],422);
+                'errors' => $Validator->errors()
+            ], 422);
         }
 
-        if($request->hasFile('category_icon'))
-        {
-            $file=$request->file('category_icon');
-            $directory="uploads/category_icon/";
-            $fileName=compressImageToSize($file, $directory, 100);
+        if ($request->hasFile('category_icon')) {
+            $file = $request->file('category_icon');
+            $directory = "uploads/category_icon/";
+            $fileName = compressImageToSize($file, $directory, 100);
         }
 
-        $MainCategory=MainCategoryModel::create([
-            'category_name'=>$request->input('category_name'),
-            'remark'=>$request->input('remark'),
-            'status'=>$request->input('status'),
-            'category_slug'=>$request->input('category_slug'),
-            'category_icon'=>$fileName
+        $MainCategory = MainCategoryModel::create([
+            'category_name' => $request->input('category_name'),
+            'remark' => $request->input('remark'),
+            'status' => $request->input('status'),
+            'category_slug' => $request->input('category_slug'),
+            'category_icon' => $fileName
         ]);
 
 
-        if($MainCategory)
-        {
-            return response()->json(['success'=>'Main Category Created Successfully Done']);
+        if ($MainCategory) {
+            return back()->with(['success' => 'Main Category Created Successfully Done']);
+        } else {
+            return back()->with(['error' => 'Main Category not Created Successfully Done']);
         }
-        else{
-            return response()->json(['error'=>'Main Category not Created Successfully Done']);
-        }
-
-
     }
 
     /**
@@ -89,8 +84,8 @@ class MainCategory extends Controller
      */
     public function edit(string $id)
     {
-        $category=MainCategoryModel::find($id);
-        return response()->json($category);
+        $category = MainCategoryModel::find($id);
+        return view('admin_panel.global_setting.Edit.edit-main-category',compact('category'));
     }
 
     /**
@@ -98,40 +93,39 @@ class MainCategory extends Controller
      */
     public function update(Request $request, string $id)
     {
-       
-        $Validator=Validator::make($request->all(),[
-            'category_name'=>'required|string',
-            'remark'=>'required|string',
-            'status'=>'required',
-           'category_icon' => 'nullable|file|mimes:jpg,png,jpeg,gif|max:5048',
-            'category_slug'=>'required|string'
+
+        $Validator = Validator::make($request->all(), [
+            'category_name' => 'required|string',
+            'remark' => 'required|string',
+            'status' => 'required',
+            'category_icon' => 'nullable|file|mimes:jpg,png,jpeg,gif|max:5048',
+            'category_slug' => 'required|string'
         ]);
 
-        if($Validator->fails())
-        {
+        if ($Validator->fails()) {
             return response()->json([
-                'errors'=>$Validator->errors()
-            ],422);
+                'errors' => $Validator->errors()
+            ], 422);
         }
 
 
-        $MainCategory=MainCategoryModel::find($id);
-        if($request->hasFile('category_icon')) {
+        $MainCategory = MainCategoryModel::find($id);
+        if ($request->hasFile('category_icon')) {
             // Get the old file name
             $oldFileName = $MainCategory->category_icon;
-        
+
             // Check if the old file exists and delete it
             if ($oldFileName && Storage::disk('public')->exists($oldFileName)) {
                 Storage::disk('public')->delete($oldFileName);
             }
-        
+
             // Handle new file upload
             $file = $request->file('category_icon');
             $directory = "uploads/category_icon/";
-            $fileName = compressImageToSize($file, $directory, 100); 
-        
+            $fileName = compressImageToSize($file, $directory, 100);
+
             // Update with new file name
-            $result= $MainCategory->update([
+            $result = $MainCategory->update([
                 'category_name' => $request->input('category_name'),
                 'remark' => $request->input('remark'),
                 'status' => $request->input('status'),
@@ -140,7 +134,7 @@ class MainCategory extends Controller
             ]);
         } else {
             // Update without changing the file
-            $result=$MainCategory->update([
+            $result = $MainCategory->update([
                 'category_name' => $request->input('category_name'),
                 'remark' => $request->input('remark'),
                 'status' => $request->input('status'),
@@ -148,15 +142,13 @@ class MainCategory extends Controller
                 // No need to update 'category_icon' if no new file is uploaded
             ]);
         }
-        
 
 
-        if($result)
-        {
-            return response()->json(['success'=>'Main Category updated Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Main Category not updated Successfully Done']);
+
+        if ($result) {
+            return back()->with(['success' => 'Main Category updated Successfully Done']);
+        } else {
+            return back()->with(['error' => 'Main Category not updated Successfully Done']);
         }
     }
 
@@ -165,14 +157,12 @@ class MainCategory extends Controller
      */
     public function destroy(string $id)
     {
-        $result=MainCategoryModel::find($id)->delete();
-        
-        if($result)
-        {
-            return response()->json(['success'=>'Main Category deleted Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Main Category not deleted Successfully Done']);
+        $result = MainCategoryModel::find($id)->delete();
+
+        if ($result) {
+            return response()->json(['success' => 'Main Category deleted Successfully Done']);
+        } else {
+            return response()->json(['error' => 'Main Category not deleted Successfully Done']);
         }
     }
 }

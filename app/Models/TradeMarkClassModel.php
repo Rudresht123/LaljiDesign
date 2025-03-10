@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TradeMarkClassModel extends Model
+class TradeMarkClassModel extends Record
 {
     use HasFactory;
     protected $table="trademark_classes";

@@ -21,7 +21,9 @@
     },
     "autoload": {
         "files": [
+            "app/helpers.php",
             "app/Helpers/date_formate.php",
+            "app/Helpers/alerthelper.php",
             "app/Helpers/financialYearSession.php",
             "app/Helpers/image_size_reduce.php",
             "app/Helpers/clientStatusUpdate.php",

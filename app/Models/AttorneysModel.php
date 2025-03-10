@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserPermissionModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Record;
 
-class AttorneysModel extends Model
+class AttorneysModel extends Record
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table="attorneys";
     protected $fillable=[
         'attorneys_name',

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FinancialYearModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 
 
 class FinancialYear extends Controller
@@ -15,7 +16,8 @@ class FinancialYear extends Controller
      */
     public function index()
     {
-        return view('admin_panel.session.index');
+        $financialyear = (new GlobalSettingRepo())->finanacialyear();
+        return view('admin_panel.session.index', compact('financialyear'));
     }
 
     /**
@@ -29,43 +31,37 @@ class FinancialYear extends Controller
     /**
      * Store a newly created resource in storage.
      */
- 
-        public function store(Request $request)
-        {
-           
-            $validator = Validator::make($request->all(), [
-                'financial_session' => 'required',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
-                'is_active'=>'nullable'
-            ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->errors()
-                ], 422); 
-            }
-            $newData=new FinancialYearModel();
-            $newData->fill($validator->validated());
-            if($request->input('is_active'))
-            {
-                FinancialYearModel::query()->update(['is_active' => 'no']);
-            }
-            $newData->is_active = $request->input('is_active') ? 'yes' : 'no';
+    public function store(Request $request)
+    {
 
-          if($newData->save())
-          {
-            return response()->json(['success'=>'Financial Year Created Successfully Done']);
-          }
-          else
-          {
-            return response()->json(['error'=>'Financial Year not Created Successfully Done']);
+        $validator = Validator::make($request->all(), [
+            'financial_session' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'is_active' => 'nullable'
+        ]);
 
-          }
-
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
         }
-        
-    
+        $newData = new FinancialYearModel();
+        $newData->fill($validator->validated());
+        if ($request->input('is_active')) {
+            FinancialYearModel::query()->update(['is_active' => 'no']);
+        }
+        $newData->is_active = $request->input('is_active') ? 'yes' : 'no';
+
+        if ($newData->save()) {
+            return back()->with(['success' => 'Financial Year Created Successfully Done']);
+        } else {
+            return back()->with(['error' => 'Financial Year not Created Successfully Done']);
+        }
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -80,8 +76,8 @@ class FinancialYear extends Controller
      */
     public function edit(string $id)
     {
-        $financialyear=FinancialYearModel::find($id);
-        return response()->json($financialyear);
+        $financialyear = FinancialYearModel::find($id);
+        return view('admin_panel.session.edit', compact('financialyear'));
     }
 
     /**
@@ -89,50 +85,34 @@ class FinancialYear extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'financial_session' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'is_active'=>'nullable'
+            'is_active' => 'nullable'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors()
-            ], 422); 
+            ], 422);
         }
-        $newData=FinancialYearModel::find($id);
+        $newData = FinancialYearModel::find($id);
         $newData->fill($validator->validated());
-        if($request->input('is_active'))
-        {
+        if ($request->input('is_active')) {
             FinancialYearModel::query()->update(['is_active' => 'no']);
         }
         $newData->is_active = $request->input('is_active') ? 'yes' : 'no';
 
-      if($newData->update())
-      {
-        return response()->json(['success'=>'Financial Year updated Successfully Done']);
-      }
-      else
-      {
-        return response()->json(['error'=>'Financial Year not updated Successfully Done']);
-
-      }
+        if ($newData->update()) {
+            return response()->json(['success' => 'Financial Year updated Successfully Done']);
+        } else {
+            return response()->json(['error' => 'Financial Year not updated Successfully Done']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $result=FinancialYearModel::find($id)->delete();
-        if($result)
-        {
-            return response()->json(['success'=>'Financial Year Deleted Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Financial Not Year Deleted Successfully Done']);
-        }
-    }
 }

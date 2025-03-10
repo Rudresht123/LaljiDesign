@@ -64,6 +64,8 @@
     <link rel="stylesheet" href="{{ asset('../../assets/css/dashforge.auth.css') }}">
     <link rel="stylesheet" href="{{ asset('../../assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('../../assets/css/bootstrap-multiselect.css') }}">
+    <link href="{{asset('../../alertify/alertify.css')}}" rel="stylesheet">
+    <link href="{{asset('../../alertify/alerti.css')}}" rel="stylesheet">
 </head>
 
 <body>

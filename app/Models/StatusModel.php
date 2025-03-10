@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use APp\Models\Record;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StatusModel extends Model
+class StatusModel extends Record
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table="status";
     protected $fillable=[
         'status_name',

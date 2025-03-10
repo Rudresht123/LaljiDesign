@@ -401,8 +401,55 @@ $(document).ready(function() {
 <script src="{{ asset('../../assets/js/options.js')}}"></script>
 <script src="{{ asset('../../assets/js/search.js')}}"></script>
 <script src="{{asset('../../assets/js/addfield.js')}}"></script>
-  
+<script src="{{asset('../../assets/jshelper/TableHelper.js')}}"></script>
+<script src="{{asset('../../assets/jshelper/select-box-list.js')}}"></script>
+<script src="{{ asset('../../alertify/alertify.js')}}"></script>
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $(".BtnEditUrl").bind( "click", function( event ) {
+            var EditViewUrl = $(this).val();
+            if (EditViewUrl != 0 && EditViewUrl != 'noprmission') {
+                $("#editModelsData").modal('show');
+                editmodalfn(EditViewUrl);
+            }
+            else if(EditViewUrl == 'noprmission'){
+                alert("Sorry, You Dont Have Permission For This");
+                window.location.reload();
+            }else{
+                alert("Sorry, Url Not Found Please Reload The Page");
+                window.location.reload();
+            }
+        });
+        function editmodalfn(EditViewUrl) {
+            $("#ModelLoadData").html("<div class='text-center text-secondary mg-t-30'><div class='spinner-border text-primary'></div> <div class='tx-15 mg-l-10'><b>Please wait few seconds...</b></div></div>");
+            $("#ModelLoadData").load(EditViewUrl, function (responseText, textStatus, XMLHttpRequest) {
+                    if (textStatus == "error") {
+                        $("#ModelLoadData").html(responseText);
+                    }
+                $("form").submit(function(event) {
+                    loader('block');
+                });
+                }
+            );
+        }
 
+
+        //model show top side
+        $('.modal').on('show.bs.modal', function (event) {
+            var idx = $('.modal:visible').length;
+            $(this).css('z-index', 1040 + (10 * idx));
+        });
+        $('.modal').on('shown.bs.modal', function (event) {
+            var idx = ($('.modal:visible').length) - 1; // raise backdrop after animation.
+            $('.modal-backdrop').not('.stacked').css('z-index', 1039 + (10 * idx));
+            $('.modal-backdrop').not('.stacked').addClass('stacked');
+        });
+
+    });
+</script>
+
+
+{!! autoAlert()!!}
 </body>
 
 </html>

@@ -20,13 +20,12 @@ use App\Http\Controllers\PDFSettingController;
 use App\Http\Controllers\SubStatusController;
 use App\Http\Controllers\user\RegistrationController;
 use App\Http\Middleware\RolePermissionMiddleware;
-
+use App\Http\Controllers\gloalsetting\DeleteRecord;
 // Session Controller Start here
 Route::get('admin/global-setting/financialYear',[FinancialYear::class,'index'])->name('admin.global-setting.financialYear')->middleware(['auth','verified',RolePermissionMiddleware::class]);
-Route::post('admin/global-setting/financialYear',[FinancialYear::class,'store'])->name('admin.global-setting.financialYear')->middleware(['auth','verified']);
+Route::post('admin/global-setting/financialYear',[FinancialYear::class,'store'])->name('admin.global-setting.create-financialYear')->middleware(['auth','verified']);
 Route::get('admin/global-setting/edit/financialYear/{id}',[FinancialYear::class,'edit'])->name('admin.global-setting.edit.financialYear')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global-setting/edit/financialYear/{id}',[FinancialYear::class,'update'])->name('admin.global-setting.edit.financialYear')->middleware(['auth','verified']);
-Route::delete('admin/global-setting/delete/financialYear/{id}',[FinancialYear::class,'destroy'])->name('admin.global-setting.delete.financialYear')->middleware(['auth','verified']);
 
 // Session Update
 Route::post('admin/global-setting/update/financialYear/',[UpdateFinancialYear::class,'updateSession'])->name('financialYear.update')->middleware(['auth','verified',RolePermissionMiddleware::class]);
@@ -47,7 +46,6 @@ Route::get('admin/global-setting.main-category',[MainCategory::class,'index'])->
 Route::post('admin/global-setting.create-main-category',[MainCategory::class,'store'])->name('admin.global-setting.create-main-category')->middleware(['auth','verified']);
 Route::get('admin/global-setting.edit-main-category/{id}',[MainCategory::class,'edit'])->name('admin.global-setting.edit-main-category')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global-setting.edit-main-category/{id}',[MainCategory::class,'update'])->name('admin.global-setting.edit-main-category')->middleware(['auth','verified']);
-Route::delete('admin/global-setting.delete-main-category/{id}',[MainCategory::class,'destroy'])->name('admin.global-setting.delete-main-category')->middleware(['auth','verified']);
 
 // Sub category route start here
 Route::get('admin/global-setting/sub-category',[SubCategory::class,'index'])->name('admin.global-setting.sub-category')->middleware(['auth','verified',RolePermissionMiddleware::class]);
@@ -155,3 +153,9 @@ Route::delete('admin/global_setting/delete-pdf-template/{id}',[PDFSettingControl
 
 // Pdf Controllers Method
 Route::get('admin/TrademarkUser/pdf/{id}', [PDFController::class, 'generatePDF'])->name('admin.trademarkuser.pdf')->middleware(['auth','verified',RolePermissionMiddleware::class]);
+
+
+
+// Delete Urls Here
+Route::get('RecordDelete/{id}/financial_year/delete',[DeleteRecord::class,'deleteFinancialYear'])->name('RecordDelete.FinancialYear');
+Route::get('RecordDelete/{id}/main_category/delete',[DeleteRecord::class,'deleteMainCategory'])->name('RecordDelete.MainCategory');
