@@ -58,10 +58,10 @@ $(".select-box").on('focus', function () {
 var previous;
 $("table tbody").on('change', '.select-box1', function () {
     var tr = $(this).closest('tr');
-
+  
     previous = this.value;
     var forid = $(this).data('for');
-    alert(forid);
+   
     // Empty the options in the select box that corresponds to the 'forid' within the same row
     tr.find("." + forid).empty();
 
@@ -92,30 +92,47 @@ $("table tbody").on('change', '.select-box1', function () {
             });
             url_request = "&" + url_request.join("&");
         }
-
         var url = "/GetSelectBoxDataList/" + $(this).data('get') + "?" + $(this).data('this_id') + "=" + $(this).val() + url_request;
+       
+        document.getElementById("ld").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        $.ajax({
+            url: url,       
+            type: 'GET',   
+            dataType: 'json', 
+            success: function (data) {
+                console.log("AJAX Success:", data);
+                
+                var result = data;
 
-
-        loader('block');
-        formrequestajax('', url, 'GET').success(function (data) {
-            var result = $.parseJSON(data);
-            if (result) {
-                $.each(result, function (key, value) {
-                    tr.find("." + forid).append('<option value="' + key + '">' + value + '</option>');
-                });
-            } else {
-                tr.find("." + forid).append("<option value=''>No Record Found!</option>");
+                if (result) {
+                    $.each(result, function (key, value) {
+                        tr.find("." + forid).append('<option value="' + key + '">' + value + '</option>');
+                    });
+                } else {
+                    tr.find("." + forid).append("<option value=''>No Record Found!</option>");
+                }
+        
+                if (ismultiple == "multiple") {
+                    tr.find("." + forid).multiselect('rebuild');
+                }
+        
+                // Hide loader
+                document.getElementById("ld").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error: ", textStatus, errorThrown);
+        
+                // Hide loader
+                document.getElementById("ld").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+        
+                swal("Oops!", "Sorry, something went wrong!", "error");
             }
-
-            if (ismultiple == "multiple") {
-                tr.find("." + forid).multiselect('rebuild');
-            }
-            loader('none');
-        }).fail(function (sender, message, details) {
-            loader('none');
-            swal("Oops!", "Sorry, something went wrong!", "error");
-            return false;
         });
+        
+    
     }
 });
 

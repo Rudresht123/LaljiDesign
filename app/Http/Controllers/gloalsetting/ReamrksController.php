@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\gloalsetting;
 use App\Http\Controllers\Controller;
 use App\Models\RemarksModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +14,8 @@ class ReamrksController extends Controller
      */
     public function index()
     {
-        return view('admin_panel.global_setting.remarks.index');
+        $remarks=(new GlobalSettingRepo())->remarks();
+        return view('admin_panel.global_setting.define-remarks',compact('remarks'));
     }
 
     /**
@@ -35,7 +37,7 @@ class ReamrksController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422); 
         }
@@ -45,28 +47,25 @@ class ReamrksController extends Controller
 
         if($newRemark->save())
         {
-            return response()->json(['success'=>'Remarks Created Successfully Done']);
+            return back()->with(['success'=>'Remarks Created Successfully Done']);
         }
         else{
-            return response()->json(['success'=>'Remarks not Created Successfully Done']);
+            return back()->with(['success'=>'Remarks not Created Successfully Done']);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $remarks=RemarksModel::find($id);
-        return response()->json($remarks);
+        $remark=RemarksModel::find($id);
+        return view('admin_panel.global_setting.Edit.edit-remarks',compact('remark'));
     }
 
     /**
@@ -80,7 +79,7 @@ class ReamrksController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422); 
         }
@@ -91,12 +90,12 @@ class ReamrksController extends Controller
             $newRemark->fill($validator->validated());
         
             if ($newRemark->update()) {
-                return response()->json(['success' => 'Remarks updated successfully.']);
+                return back()->with(['success' => 'Remarks updated successfully.']);
             } else {
-                return response()->json(['error' => 'Failed to update remarks.']);
+                return back()->with(['error' => 'Failed to update remarks.']);
             }
         } else {
-            return response()->json(['error' => 'Remarks not found.']);
+            return back()->with(['error' => 'Remarks not found.']);
         }
         
     }
@@ -104,15 +103,4 @@ class ReamrksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $result=RemarksModel::find($id)->delete();
-        if($result)
-        {
-            return response()->json(['success'=>'Remarks Deleted Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Remarks Not  Deleted Successfully Done']);
-        }
-    }
 }

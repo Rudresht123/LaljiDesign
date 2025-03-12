@@ -19,6 +19,30 @@ class DeleteRecord extends Controller
     {
         return $this->deleteRecord('main_category', $id);
     }
+    public function deleteStatus($id){
+        return $this->deleteRecord('status', $id); 
+    }
+    public function deleteOffice($id){
+        return $this->deleteRecord('offices', $id);  
+    }
+    public function deleteRemarks($id){
+        return $this->deleteRecord('remarks', $id);
+    }
+    public function deleteWhatsapRemarks($id)
+    {
+        return $this->deleteRecord('client_remarks', $id);
+    }
+    public function deleteConsultant($id)
+    {
+        return $this->deleteRecord('consultant', $id);
+    }
+    public function deleteDealers($id)
+    {
+        return $this->deleteRecord('deal_with', $id);
+    }
+    public function deleteExcelcolumns($id){
+        return $this->deleteRecord('excelcolumn_name', $id); 
+    }
     private function deleteRecord($table_name, $id)
     {
         try {

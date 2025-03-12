@@ -11,19 +11,19 @@
         <ol class="breadcrumb breadcrumb-style1 mg-b-10">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">Global Setting</li>
-            <li class="breadcrumb-item active" aria-current="page">Define-ExcelColumn Name</li>
+            <li class="breadcrumb-item active" aria-current="page">Define-Permission-Group</li>
         </ol>
     </nav>
 
     <div class="custom-card col-lg-11 mx-auto">
         <div class="panel panel-default">
-            <div class="panel-heading"><b><i class="fa fa-list"></i> ExcelColumn List</b></div>
+            <div class="panel-heading"><b><i class="fa fa-list"></i> Permission Group List</b></div>
             <div class="panel-body pd-b-0 row">
                 <div class="col-lg-2 mb-3">
-                    @if(auth()->user()->hasPermission('admin.global-setting.create-excelcolumn'))
+                    @if(auth()->user()->hasPermission('admin.global-setting.create-permission-group'))
                     <button type="button" data-bs-toggle="modal" data-bs-target="#addModal"
                         class="btn btn-block mg-t-10 btn-outline-primary btn-sm rounded-pill px-4">
-                        <i class="fa fa-plus"></i> New ExcelColumn
+                        <i class="fa fa-plus"></i> Add New Permission-Group
                     </button>
                     @endif
                     <button type="button" class="btn btn-block btn-outline-dark mg-t-10 btn-sm rounded-pill px-4"><i class="fa fa-times"></i> Dashboard</button>
@@ -32,20 +32,19 @@
 
                 <div class="col-lg-10 vhr">
                     <div class="table-responsive">
-                        <table id="excelColumnTable" class="table table-hover w-100 fs-10">
+                        <table id="permissionGroup" class="table table-hover w-100 fs-10">
                             <thead class="bg-light fw-bold">
                                 <tr class="py-3">
-                                    <th class="fw-bold">Column Name</th>
-                                    <th class="fw-bold">ExcelColumn Name</th>
+                                    <th class="fw-bold">Permission Group Name</th>
+                                    <th class="fw-bold">Permission Group Slug</th>
                                     <th class="fw-bold">Status</th>
                                     <th class="fw-bold">Action</th>
-                                   
                                 </tr>
                             </thead>
                             <tbody>
-                             
+
                             </tbody>
-                            
+
                         </table>
                     </div>
                 </div>
@@ -57,53 +56,51 @@
 
     </div>
 
-   
-  
+
+
     <!-- Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i> Add
-                        New ExcelColumn Name</h1>
+                        New Permission Group</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <form id="addColumnName" method="POST">
+                    <form id="addStatus" method="POST">
                         @csrf
                         <fieldset class="form-fieldset">
-                            <legend>ExcelColumn Information</legend>
+                            <legend>Permission Group Information</legend>
                             <div class="gorm-group ">
-                                <label for="" class="form-label">TableColumn Name 
-                                    <span class="text-danger">*</span></label>
-                                       <select name="column_name" required class="form-select" id="">
-                                        <option value="">**Please Select Column Name</option>
-                                        @foreach ($newcolumnname as $column)
-                                            <option value="{{$column}}">{{$column}}</option>
-                                        @endforeach
-                                       </select>
+                                <label for="" class="form-label">Permission Group Name <span
+                                        class="text-danger">*</span></label>
+                                <input name="permission_group" type="text" class="form-control" required
+                                    placeholder="Permission Group Name...">
                             </div>
-                          
-                        <div class="gorm-group ">
-                            <label for="" class="form-label">ExcelColumn Name <span
-                                    class="text-danger">*</span></label>
-                                    <input name="excelcolumn_name" type="text" class="form-control" required placeholder="ExcelColumn Name...">
-                        </div>
-                        <div class="gorm-group ">
-                            <label for="" class="form-label">Status<span class="text-danger">*</span></label>
-                           <select class="form-select" name="status" id="">
-                            <option value="yes">Active</option>
-                            <option value="no">De-Active</option>
-                           </select>
-                        </div>
-                    <div class="row mt-3">
-                        <div class="col d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                    </fieldset>
+
+                            <div class="gorm-group ">
+                                <label for="" class="form-label">Permission Group Slug <span
+                                        class="text-danger">*</span></label>
+                                <input name="permission_group_slug" type="text" class="form-control" required
+                                    placeholder="Permission Group Sulg...">
+                            </div>
+                            <div class="gorm-group ">
+                                <label for="" class="form-label">Status<span class="text-danger">*</span></label>
+                                <select class="form-select" name="status" id="">
+                                    <option value="yes">Active</option>
+                                    <option value="no">De-Active</option>
+                                </select>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col d-flex justify-content-end">
+                                    <button type="button" class="btn btn-secondary me-2"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </form>
                 </div>
             </div>
@@ -116,7 +113,7 @@
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i>
                         Edit
-                       ExcelColumn</h1>
+                        Permission Group</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -124,40 +121,42 @@
                     <form id="editStatus" method="POST">
                         @csrf
                         <fieldset class="form-fieldset">
-                            <legend>ExcelColumn Information</legend>
-                            <div class="gorm-group ">
-                                <label for="" class="form-label">TableColumn Name 
-                                    <span class="text-danger">*</span></label>
-                                       <select name="column_name" required class="form-select" id="">
-                                        <option value="">**Please Select Column Name</option>
-                                        @foreach ($columnName as $columnname)
-                                            <option value="{{$columnname}}">{{$columnname}}</option>
-                                        @endforeach
-                                       </select>
-                            </div>
-
+                            <legend>Permission Group Information</legend>
                             <div class="form-group">
-                                <input type="text" hidden class="form-control" name="excelcolumn_id" value="" id="excelcolumn_id">
+                                <input type="text" hidden class="form-control" name="group_id" value=""
+                                    id="group_id">
                             </div>
-                        <div class="gorm-group ">
-                            <label for="" class="form-label">ExcelColumn Name <span
-                                    class="text-danger">*</span></label>
-                                    <input name="excelcolumn_name" type="text" class="form-control" required placeholder="ExcelColumn Name...">
+                            <div class="gorm-group ">
+                                <label for="" class="form-label">Permission Group Name <span
+                                        class="text-danger">*</span></label>
+                                <input name="permission_group" type="text" class="form-control" required
+                                    placeholder="Permission Group Name...">
 
-                        </div>
-                        <div class="gorm-group ">
-                            <label for="" class="form-label">Status<span class="text-danger">*</span></label>
-                           <select class="form-select" name="status" id="">
-                            <option value="yes">Active</option>
-                            <option value="no">De-Active</option>
-                           </select>
-                        </div>                     
-                        <div class="row mt-3">
-                            <div class="col d-flex justify-content-end">
-                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
                             </div>
-                        </div>
+
+                            <div class="gorm-group ">
+                                <label for="" class="form-label">Permission Group Slug <span
+                                        class="text-danger">*</span></label>
+                                <input name="permission_group_slug" type="text" class="form-control" required
+                                    placeholder="Permission Group Slug...">
+
+                            </div>
+
+
+                            <div class="gorm-group ">
+                                <label for="" class="form-label">Status<span class="text-danger">*</span></label>
+                                <select class="form-select" name="status" id="">
+                                    <option value="yes">Active</option>
+                                    <option value="no">De-Active</option>
+                                </select>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col d-flex justify-content-end">
+                                    <button type="button" class="btn btn-secondary me-2"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -169,12 +168,12 @@
     <script class="text/javascript">
         $(document).ready(function() {
             // Handle Add Financial Year Form Submission
-            $('#addColumnName').on('submit', function(e) {
+            $('#addStatus').on('submit', function(e) {
                 e.preventDefault();
                 // Show loader and overlay
                 $('#ld').show();
                 $('#overlay').show();
-                let route = "{{ route('admin.global-setting.create-excelcolumn') }}";
+                let route = "{{ route('admin.global-setting.create-permission-group') }}";
                 let formData = $(this).serialize();
 
                 $.ajax({
@@ -189,12 +188,12 @@
                         $('#overlay').hide(); // Hide overlay
                         Swal.fire({
                             title: 'Success!',
-                            text: response.success,
+                            text: 'Data saved successfully!',
                             icon: 'success',
                             confirmButtonText: 'Okay'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#addColumnName')[0].reset(); // Reset form fields
+                                $('#addStatus')[0].reset(); // Reset form fields
                                 window.location.reload(); // Reload the page
                             }
                         });
@@ -228,22 +227,22 @@
             });
 
             // Handle Edit Button Click
-            $('#excelColumnTable').on('click','.editButton', function(e) {
+            $('#permissionGroup').on('click', '.editButton', function(e) {
                 e.preventDefault();
                 let statusId = $(this).data('id');
-                let route = "{{ route('admin.global-setting.edit-excelcolumn', ':id') }}".replace(':id',
-                statusId);
+                let route = "{{ route('admin.global-setting.edit-permission-group', ':id') }}".replace(':id',
+                    statusId);
 
                 $.ajax({
                     url: route,
                     type: 'GET',
                     success: function(response) {
                         console.log(response);
-                        $('select[name="column_name"]').val(response.column_name);
-                        $('input[name="excelcolumn_name"]').val(response.excelcolumn_name);
-                        $('input[name="excelcolumn_id"]').val(response.id);
+                        $('input[name="group_id"]').val(response.id);
+                        $('input[name="permission_group"]').val(response.permission_group);
+                        $('input[name="permission_group_slug"]').val(response.permission_group_slug);
                         $('select[name="status"]').val(response.status);
-                        
+
                         $('#editModal').modal('show'); // Show modal properly
                     },
                     error: function(xhr, status, error) {
@@ -255,9 +254,9 @@
             // Handle Edit Financial Year Form Submission
             $('#editStatus').on('submit', function(e) {
                 e.preventDefault();
-                let statusId = $('#excelcolumn_id').val(); // Get the year ID again if needed
-                let route = "{{ route('admin.global-setting.update-excelcolumn', ':id') }}".replace(':id',
-                statusId);
+                let statusId = $('#group_id').val(); // Get the year ID again if needed
+                let route = "{{ route('admin.global-setting.update-permission-group', ':id') }}".replace(':id',
+                    statusId);
                 let formData = $(this).serialize();
 
                 $.ajax({
@@ -303,7 +302,7 @@
                     }
                 });
             });
-            $('#excelColumnTable').on('click','.deletebutton', function(e) {
+            $('#permissionGroup').on('click', '.deletebutton', function(e) {
                 e.preventDefault();
                 Swal.fire({
                     title: 'Are you sure?',
@@ -317,7 +316,7 @@
                     if (result.isConfirmed) {
                         // Code to perform the action (e.g., delete)
                         let statusId = $(this).data('id');
-                        route = "{{ route('admin.global-setting.destroy-consultant', ':id') }}"
+                        route = "{{ route('admin.global-setting.destroy-permission-group', ':id') }}"
                             .replace(':id', statusId);
                         $.ajax({
                             headers: {
@@ -362,43 +361,62 @@
 
             });
         });
-        
     </script>
 
-          {{-- /datatable initialization --}}
-          <script type="text/javascript">
-            $(document).ready(function() {
-                let route = "{{ route('admin.common.datatable') }}";
-                let csrf = "{{ csrf_token() }}";
-    
-                let columnsDefinition = [{
-                        data: 'column_name',
-                        name: 'column_name'
-                    },{
-                        data:'excelcolumn_name',
-                        name:'excelcolumn_name'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    }
-                ];
-    
-                intializeCustomDatatable({
-                    route: route, 
-                    csrf: csrf,
-                    columnsDefinition: columnsDefinition, 
-                    tableId: 'excelColumnTable',
-                    dbtable: 'excelcolumn_name'
-                });
+    {{-- /datatable initialization --}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let route = "{{ route('admin.common.datatable') }}";
+            let csrf = "{{ csrf_token() }}";
+
+            let columnsDefinition = [{
+                    data: 'permission_group',
+                    name: 'permission_group'
+                },
+                {
+                    data: 'permission_group_slug',
+                    name: 'permission_group_slug'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                }
+            ];
+
+            intializeCustomDatatable({
+                route: route, // Correctly assign the route
+                csrf: csrf, // Correctly assign the CSRF token
+                columnsDefinition: columnsDefinition, // Assign columnsDefinition
+                tableId: 'permissionGroup', // Assign the table ID
+                dbtable: 'cms_permission_groups' // Assign the database table name
             });
-        </script>
-            
-        
+
+            // block and unbloc code here
+
+            $('#permissionGroup').on('click', '.blockButton', function(e) {
+                e.preventDefault();
+                let itemId = $(this).data('id');
+                let csrf = "{{ csrf_token() }}";
+                let route = "{{ route('admin.block-data') }}";
+                let dbtable = "cms_permission_groups";
+                let columnname = "status";
+                showConfirmAlert(route, csrf, dbtable, columnname, itemId);
+            });
+            $('#permissionGroup').on('click', '.blockButton', function(e) {
+                e.preventDefault();
+                let itemId = $(this).data('id');
+                let csrf = "{{ csrf_token() }}";
+                let route = "{{ route('admin.block-data') }}";
+                let dbtable = "cms_permission_groups";
+                let columnname = "status";
+                showConfirmAlert(route, csrf, dbtable, columnname, itemId);
+            });
+        });
+    </script>
 @endsection

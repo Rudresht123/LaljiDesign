@@ -3,6 +3,24 @@
 <!-- Button trigger modal -->
 </div>
 
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Validation Error!",
+                html: `
+                    <ul style='text-align: left;'>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `,
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        });
+    </script>
+@endif
 
 
 {{-- edit status modal end here --}}

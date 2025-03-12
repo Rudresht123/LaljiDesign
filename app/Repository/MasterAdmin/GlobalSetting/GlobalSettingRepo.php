@@ -3,13 +3,19 @@
 namespace App\Repository\MasterAdmin\GlobalSetting;
 
 use App\Models\AttorneysModel;
+use App\Models\ClientRemarksModel;
 use App\Models\ConsultantModel;
 use App\Models\DeallerModel;
 use App\Repository\AbstractMethod\RepositoryContract;
 use App\Models\Record;
 use App\Models\FinancialYearModel;
 use App\Models\MainCategoryModel;
+use App\Models\OfficesModel;
+use App\Models\PermissionGroup;
+use App\Models\RemarksModel;
 use App\Models\StatusModel;
+use App\Models\SubcategoryModel;
+use App\Models\SubStatusModel;
 use App\Models\TradeMarkClassModel;
 
 class GlobalSettingRepo extends RepositoryContract
@@ -35,5 +41,30 @@ class GlobalSettingRepo extends RepositoryContract
     }
     public function status($search=null){
         return StatusModel::query()->where($search)->record()->get();
+    }
+    public function substatus($search=null){
+        return SubStatusModel::query()->where($search)->record()->get();
+    }
+    public function offices()
+    {
+        return OfficesModel::query()->record()->get();
+    }
+    public function subcategory($search=null){
+        return SubcategoryModel::query()->record()->get();
+    }
+    public function financialyears()
+    {
+        return FinancialYearModel::query()->record()->get();
+    }
+    public function remarks($search=null)
+    {
+        return RemarksModel::query()->record()->get();
+    }
+    public function whatsappremarks()
+    {
+        return ClientRemarksModel::query()->record()->get();
+    }
+    public function permissionGroups(){
+        return PermissionGroup::query()->record()->get();
     }
 }

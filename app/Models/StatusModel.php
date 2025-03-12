@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use APp\Models\Record;
+use App\Models\Record;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StatusModel extends Record

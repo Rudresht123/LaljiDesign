@@ -4,6 +4,7 @@ namespace App\Http\Controllers\gloalsetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\PermissionGroup;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,8 @@ class PermissionGroupController extends Controller
      */
     public function index()
     {
-        return view("admin_panel.global_setting.permission_group.index");
+        $groups=(new GlobalSettingRepo())->permissionGroups();
+        return view("admin_panel.global_setting.define-permission-group");
     }
 
     /**

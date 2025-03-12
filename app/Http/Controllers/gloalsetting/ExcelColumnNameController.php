@@ -18,10 +18,10 @@ class ExcelColumnNameController extends Controller
     {
         $tableColumns = Schema::getColumnListing('trademark_users'); 
         $columnName = ExcelColumnNameModel::pluck('column_name')->toArray();
+        $columnNames = ExcelColumnNameModel::get();
         $newcolumnname = !empty($columnName) ? array_diff($tableColumns, $columnName) : $tableColumns;
-        
         if($newcolumnname){
-        return view('admin_panel.global_setting.excelcolumn_name.index', compact('newcolumnname','columnName'));
+        return view('admin_panel.global_setting.define-excelcolumns', compact('newcolumnname','columnName','columnNames'));
     }
     }
 
@@ -55,11 +55,11 @@ class ExcelColumnNameController extends Controller
         $newstatus->fill($validator->validated());
       if($newstatus->save())
       {
-        return response()->json(['success'=>'ExcelColumn Created Successfully Done']);
+        return back()->with(['success'=>'ExcelColumn Created Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'ExcelColumn is not Created Successfully Done']);
+        return back()->with(['error'=>'ExcelColumn is not Created Successfully Done']);
 
       }
 
@@ -78,8 +78,13 @@ class ExcelColumnNameController extends Controller
      */
     public function edit(string $id)
     {
+        $tableColumns = Schema::getColumnListing('trademark_users'); 
+        $columnName = ExcelColumnNameModel::pluck('column_name')->toArray();
+        $columnNames = ExcelColumnNameModel::get();
+        $newcolumnname = !empty($columnName) ? array_diff($tableColumns, $columnName) : $tableColumns;
         $excelcolumn=ExcelColumnNameModel::find($id);
-        return response()->json($excelcolumn);
+      
+        return view('admin_panel.global_setting.Edit.edit-excelcolumns-name', compact('tableColumns','newcolumnname','columnName','columnNames','excelcolumn'));
     }
 
     /**
@@ -112,30 +117,13 @@ class ExcelColumnNameController extends Controller
         $updateStatus->fill($validator->validated());
     
         if ($updateStatus->save()) {  // Using save() instead of update() to handle new updates
-            return response()->json(['success' => 'ExcelColumn  updated successfully']);
+            return back()->with(['success' => 'ExcelColumn  updated successfully']);
         } else {
-            return response()->json(['error' => 'ExcelColumn  update failed']);
+            return back()->with(['error' => 'ExcelColumn  update failed']);
         }
     }
     
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $consultant = ExcelColumnNameModel::find($id);
-
-        if($consultant){
-            if($consultant->delete()){  // Using save() instead of update() to handle new updates
-                return response()->json(['success' => 'ExcelColumn  deleted successfully']);
-            } else {
-                return response()->json(['error' => 'ExcelColumn  not deleted successfully']);
-            }
-        }
-        else{
-            return response()->json(['error' => 'ExcelColumn  not Find successfully']);
-        }
-    }
+  
 }
 

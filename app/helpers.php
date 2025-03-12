@@ -37,7 +37,30 @@ if(!function_exists('status')){
         return (new GlobalSettingRepo())->status();
     }
 }
-
+if(!function_exists('substatus')){
+    function substatus()
+    {
+        return (new GlobalSettingRepo())->substatus();
+    }
+}
+if(!function_exists('offices')){
+    function offices()
+    {
+        return (new GlobalSettingRepo())->offices();
+    }
+}
+if(!function_exists('subcategory')){
+    function subcategory()
+    {
+        return (new GlobalSettingRepo())->subcategory();
+    }
+}
+if(!function_exists('financialyears')){
+    function financialyears()
+    {
+        return (new GlobalSettingRepo())->financialyears();
+    }
+}
 
 
 

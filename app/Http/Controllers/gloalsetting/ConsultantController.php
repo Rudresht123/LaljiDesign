@@ -4,6 +4,7 @@ namespace App\Http\Controllers\gloalsetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\ConsultantModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,8 @@ class ConsultantController extends Controller
      */
     public function index()
     {
-        return view('admin_panel.global_setting.consultant.index');
+        $consultants=(new GlobalSettingRepo())->consultants();
+        return view('admin_panel.global_setting.define-consultant',compact('consultants'));
     }
 
     /**
@@ -39,7 +41,7 @@ class ConsultantController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422); 
         }
@@ -47,11 +49,11 @@ class ConsultantController extends Controller
         $newstatus->fill($validator->validated());
       if($newstatus->save())
       {
-        return response()->json(['success'=>'Consultant Created Successfully Done']);
+        return back()->with(['success'=>'Consultant Created Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Consultant is not Created Successfully Done']);
+        return back()->with(['error'=>'Consultant is not Created Successfully Done']);
 
       }
 
@@ -70,8 +72,8 @@ class ConsultantController extends Controller
      */
     public function edit(string $id)
     {
-        $Consultant=ConsultantModel::find($id);
-        return response()->json($Consultant);
+        $consultant=ConsultantModel::find($id);
+        return view('admin_panel.global_setting.Edit.edit-consultant',compact('consultant'));
     }
 
     /**
@@ -85,7 +87,7 @@ class ConsultantController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -94,7 +96,7 @@ class ConsultantController extends Controller
         $updateStatus = ConsultantModel::find($id);
     
         if (!$updateStatus) {
-            return response()->json([
+            return back()->with([
                 'error' => 'Consultant  not found'
             ], 404);  // Return a 404 if the record isn't found
         }
@@ -103,9 +105,9 @@ class ConsultantController extends Controller
         $updateStatus->fill($validator->validated());
     
         if ($updateStatus->save()) {  // Using save() instead of update() to handle new updates
-            return response()->json(['success' => 'Consultant  updated successfully']);
+            return back()->with(['success' => 'Consultant  updated successfully']);
         } else {
-            return response()->json(['error' => 'Consultant  update failed']);
+            return back()->with(['error' => 'Consultant  update failed']);
         }
     }
     
@@ -119,13 +121,13 @@ class ConsultantController extends Controller
 
         if($consultant){
             if($consultant->delete()){  // Using save() instead of update() to handle new updates
-                return response()->json(['success' => 'Consultant  deleted successfully']);
+                return back()->with(['success' => 'Consultant  deleted successfully']);
             } else {
-                return response()->json(['error' => 'Consultant  not deleted successfully']);
+                return back()->with(['error' => 'Consultant  not deleted successfully']);
             }
         }
         else{
-            return response()->json(['error' => 'Consultant  not Find successfully']);
+            return back()->with(['error' => 'Consultant  not Find successfully']);
         }
     }
 }

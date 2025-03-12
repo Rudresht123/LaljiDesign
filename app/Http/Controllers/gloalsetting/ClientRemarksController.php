@@ -5,6 +5,7 @@ namespace App\Http\Controllers\gloalsetting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ClientRemarksModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 class ClientRemarksController extends Controller
@@ -14,7 +15,8 @@ class ClientRemarksController extends Controller
      */
     public function index()
     {
-        return view('admin_panel.global_setting.client_remarks.index');
+        $whatsappremarks=(new GlobalSettingRepo())->whatsappremarks();
+        return view('admin_panel.global_setting.define-whatsapp-remarks',compact('whatsappremarks'));
     }
 
     /**
@@ -36,7 +38,7 @@ class ClientRemarksController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422); 
         }
@@ -46,10 +48,10 @@ class ClientRemarksController extends Controller
 
         if($newRemark->save())
         {
-            return response()->json(['success'=>'Client Remarks Created Successfully Done']);
+            return back()->with(['success'=>'Client Remarks Created Successfully Done']);
         }
         else{
-            return response()->json(['success'=>'Client Remarks not Created Successfully Done']);
+            return back()->with(['success'=>'Client Remarks not Created Successfully Done']);
         }
     }
 
@@ -66,8 +68,10 @@ class ClientRemarksController extends Controller
      */
     public function edit(string $id)
     {
-        $remarks=ClientRemarksModel::find($id);
-        return response()->json($remarks);
+        $whatsappremarks=ClientRemarksModel::find($id);
+        return view('admin_panel.global_setting.Edit.edit-whatsapp-remarks',compact('whatsappremarks'));
+
+       
     }
 
     /**
@@ -75,14 +79,14 @@ class ClientRemarksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Log::info($request->all());
+       
         $validator = Validator::make($request->all(), [
             'client_remarks' => 'required|string',
             'status' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
+            return back()->with([
                 'errors' => $validator->errors()
             ], 422); 
         }
@@ -93,27 +97,17 @@ class ClientRemarksController extends Controller
             $updatedRemarks->fill($validator->validated());
         
             if ($updatedRemarks->update()) {
-                return response()->json(['success' => 'Client Remarks updated successfully.']);
+                return back()->with(['success' => 'Client Remarks updated successfully.']);
             } else {
-                return response()->json(['error' => 'Failed to update Client remarks.']);
+                return back()->with(['error' => 'Failed to update Client remarks.']);
             }
         } else {
-            return response()->json(['error' => 'Client Remarks not found.']);
+            return back()->with(['error' => 'Client Remarks not found.']);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-         $result=ClientRemarksModel::find($id)->delete();
-        if($result)
-        {
-            return response()->json(['success'=>'CLient Remarks Deleted Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Client Remarks Not  Deleted Successfully Done']);
-        }
-    }
+   
 }

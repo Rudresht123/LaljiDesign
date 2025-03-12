@@ -21,6 +21,7 @@ use App\Http\Controllers\SubStatusController;
 use App\Http\Controllers\user\RegistrationController;
 use App\Http\Middleware\RolePermissionMiddleware;
 use App\Http\Controllers\gloalsetting\DeleteRecord;
+use App\Http\Controllers\GetSelectBoxDataListController;
 // Session Controller Start here
 Route::get('admin/global-setting/financialYear',[FinancialYear::class,'index'])->name('admin.global-setting.financialYear')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::post('admin/global-setting/financialYear',[FinancialYear::class,'store'])->name('admin.global-setting.create-financialYear')->middleware(['auth','verified']);
@@ -62,7 +63,6 @@ Route::get('admin/global_setting/status',[StatusController::class,'index'])->nam
 Route::post('admin/global_setting/create-status',[StatusController::class,'store'])->name('admin.global-setting.create-status')->middleware(['auth','verified']);
 Route::get('admin/global_setting/edit-status/{id}',[StatusController::class,'edit'])->name('admin.global-setting.edit-status')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/edit-status/{id}',[StatusController::class,'update'])->name('admin.global-setting.edit-status')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/delete-status/{id}',[StatusController::class,'destroy'])->name('admin.global-setting.delete-status')->middleware(['auth','verified']);
 
 
 // dealler status Controller
@@ -70,7 +70,6 @@ Route::get('admin/global_setting/consultant',[ConsultantController::class,'index
 Route::post('admin/global_setting/consultant',[ConsultantController::class,'store'])->name('admin.global-setting.create-consultant')->middleware(['auth','verified']);
 Route::get('admin/global_setting/consultant/{id}',[ConsultantController::class,'edit'])->name('admin.global-setting.edit-consultant')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/consultant/{id}',[ConsultantController::class,'update'])->name('admin.global-setting.update-consultant')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/consultant/{id}',[ConsultantController::class,'destroy'])->name('admin.global-setting.destroy-consultant')->middleware(['auth','verified']);
 
 
 
@@ -79,7 +78,6 @@ Route::get('admin/global_setting/excelcolumn',[ExcelColumnNameController::class,
 Route::post('admin/global_setting/excelcolumn',[ExcelColumnNameController::class,'store'])->name('admin.global-setting.create-excelcolumn')->middleware(['auth','verified']);
 Route::get('admin/global_setting/excelcolumn/{id}',[ExcelColumnNameController::class,'edit'])->name('admin.global-setting.edit-excelcolumn')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/excelcolumn/{id}',[ExcelColumnNameController::class,'update'])->name('admin.global-setting.update-excelcolumn')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/excelcolumn/{id}',[ExcelColumnNameController::class,'destroy'])->name('admin.global-setting.destroy-excelcolumn')->middleware(['auth','verified']);
 
 
 
@@ -109,7 +107,6 @@ Route::get('admin/global_setting/offices',[OfficesController::class,'index'])->n
 Route::post('admin/global_setting/offices/create-office',[OfficesController::class,'store'])->name('admin.global_setting.create-office')->middleware(['auth','verified']);
 Route::get('admin/global_setting/offices/edit-office/{id}',[OfficesController::class,'edit'])->name('admin.global_setting.edit-office')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/offices/edit-office/{id}',[OfficesController::class,'update'])->name('admin.global_setting.edit-office')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/offices/delete-office/{id}',[OfficesController::class,'destroy'])->name('admin.global_setting.delete-office')->middleware(['auth','verified']);
 
 
 // Trademark Classes Controller start here
@@ -130,15 +127,13 @@ Route::get('admin/global_setting/remarks',[ReamrksController::class,'index'])->n
 Route::post('admin/global_setting/create-remarks',[ReamrksController::class,'store'])->name('admin.global-setting.create-remarks')->middleware(['auth','verified']);
 Route::get('admin/global_setting/edit-remarks/{id}',[ReamrksController::class,'edit'])->name('admin.global-setting.edit-remarks')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/edit-remarks/{id}',[ReamrksController::class,'update'])->name('admin.global-setting.edit-remarks')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/delete-remarks/{id}',[ReamrksController::class,'destroy'])->name('admin.global-setting.delete-remarks')->middleware(['auth','verified']);
 
 
 // Clent Remarks Controller
-Route::get('admin/global_setting/cleint-remarks',[ClientRemarksController::class,'index'])->name('admin.global-setting.client-remarks')->middleware(['auth','verified',RolePermissionMiddleware::class]);
-Route::post('admin/global_setting/create-client-remarks',[ClientRemarksController::class,'store'])->name('admin.global-setting.create-client-remarks')->middleware(['auth','verified']);
-Route::get('admin/global_setting/edit-client-remarks/{id}',[ClientRemarksController::class,'edit'])->name('admin.global-setting.edit-client-remarks')->middleware(['auth','verified',RolePermissionMiddleware::class]);
-Route::put('admin/global_setting/edit-client-remarks/{id}',[ClientRemarksController::class,'update'])->name('admin.global-setting.update-client-remarks')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/delete-client-remarks/{id}',[ClientRemarksController::class,'destroy'])->name('admin.global-setting.delete-client-remarks')->middleware(['auth','verified']);
+Route::get('admin/global_setting/whatsapp-remarks',[ClientRemarksController::class,'index'])->name('admin.global-setting.client-remarks')->middleware(['auth','verified',RolePermissionMiddleware::class]);
+Route::post('admin/global_setting/create-whatsapp-remarks',[ClientRemarksController::class,'store'])->name('admin.global-setting.create-client-remarks')->middleware(['auth','verified']);
+Route::get('admin/global_setting/edit-whatsapp-remarks/{id}',[ClientRemarksController::class,'edit'])->name('admin.global-setting.edit-client-remarks')->middleware(['auth','verified',RolePermissionMiddleware::class]);
+Route::put('admin/global_setting/edit-whatsapp-remarks/{id}',[ClientRemarksController::class,'update'])->name('admin.global-setting.update-client-remarks')->middleware(['auth','verified']);
 
 
 // Pdf Controller start here
@@ -159,3 +154,16 @@ Route::get('admin/TrademarkUser/pdf/{id}', [PDFController::class, 'generatePDF']
 // Delete Urls Here
 Route::get('RecordDelete/{id}/financial_year/delete',[DeleteRecord::class,'deleteFinancialYear'])->name('RecordDelete.FinancialYear');
 Route::get('RecordDelete/{id}/main_category/delete',[DeleteRecord::class,'deleteMainCategory'])->name('RecordDelete.MainCategory');
+Route::get('RecordDelete/{id}/status/delete',[DeleteRecord::class,'deleteStatus'])->name('RecordDelete.status');
+Route::get('RecordDelete/{id}/office/delete',[DeleteRecord::class,'deleteOffice'])->name('RecordDelete.office');
+Route::get('RecordDelete/{id}/remarks/delete',[DeleteRecord::class,'deleteRemarks'])->name('RecordDelete.Remarks');
+Route::get('RecordDelete/{id}/whatsappremarks/delete',[DeleteRecord::class,'deleteWhatsapRemarks'])->name('RecordDelete.WhatsappRemarks');
+Route::get('RecordDelete/{id}/consultant/delete',[DeleteRecord::class,'deleteConsultant'])->name('RecordDelete.Consultant');
+Route::get('RecordDelete/{id}/dealers/delete',[DeleteRecord::class,'deleteDealers'])->name('RecordDelete.Dealers');
+Route::get('RecordDelete/{id}/excelcolumns/delete',[DeleteRecord::class,'deleteExcelcolumns'])->name('RecordDelete.Excelcolumns');
+
+
+
+
+    //get select box data ajax for option
+    Route::get('/GetSelectBoxDataList/{datawith}', [GetSelectBoxDataListController::class,'datalist']);

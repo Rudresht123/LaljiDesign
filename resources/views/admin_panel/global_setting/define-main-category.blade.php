@@ -36,11 +36,12 @@
                 @if(auth()->user()->hasPermission('admin.global-setting.create-main-category'))
                 <button type="button" data-bs-toggle="modal" data-bs-target="#addModelsData" class="btn btn-block mg-t-10 btn-outline-primary btn-sm rounded-pill w-100"><i class="fa fa-plus"></i> Add New</button>
                 @endif
-                @if(auth()->user()->hasPermission('admin.global-setting.edit.financialYear'))
+                @if(auth()->user()->hasPermission('admin.global-setting.edit-main-category'))
                 <button class="btn BtnEditUrl btn-block btn-outline-success btn-edit mg-t-10 btn-sm rounded-pill w-100" disabled><i class="fa fa-edit"></i> Edit</button>
                 @endif
+                @if(auth()->user()->hasPermission('RecordDelete.MainCategory'))
                 <a href="#" class="BtnRemoveUrl"><button type="button" class="btn btn-remove btn-block btn-outline-danger mg-t-10 btn-sm rounded-pill w-100" disabled><i class="fa fa-trash-alt"></i> Remove</button></a>
-
+                @endif
                 @if(auth()->user()->hasPermission('admin.global-setting.sub-category'))
                 <a href="{{ route('admin.global-setting.sub-category') }}"
                     class="btn btn-remove btn-block btn-outline-success mg-t-10 btn-sm rounded-pill w-100">
@@ -65,6 +66,7 @@
                     <table id="example2" class="table datatable w-100 table-bordered dataTable example2">
                         <thead class="bg-light fw-bold">
                             <tr class="py-3">
+                                <th class="fw-bold">Sr. No.</th>
                                 <th class="fw-bold">Category Name</th>
                                 <th class="fw-bold">Remarks</th>
                                 <th class="fw-bold">Slug</th>
@@ -77,6 +79,7 @@
                             <tr deleteUrl="{{route('RecordDelete.MainCategory',$category->id)}}" editUrl="{{auth()->user()->hasPermission('admin.global-setting.edit-main-category') ? route('admin.global-setting.edit-main-category', $category->id) : 'noprmission' }}">
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$category->category_name ?? ''}}</td>
+                                <td>{{ implode(' ', array_slice(str_word_count($category->remark ?? '', 1), 0, 4)) . '...' }}</td>
                                 <td>{{$category->category_slug ?? ''}}</td>
                                 <td class="text-center">
                                     {!! $category->status == 'yes'

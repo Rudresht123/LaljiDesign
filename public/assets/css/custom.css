@@ -130,3 +130,13 @@
 .tr_active{
     background-color: #fadbd8 !important;
 }
+.vhr {
+    overflow-x: hidden; /* Hides horizontal scroll */
+    overflow-y: auto; /* Enables vertical scrolling */
+    -ms-overflow-style: none;  /* Hide scrollbar in IE/Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+}
+
+.vhr::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari */
+}

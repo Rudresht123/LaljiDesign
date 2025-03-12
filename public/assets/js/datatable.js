@@ -274,6 +274,7 @@ $(function(){
 
     $('#example1').DataTable({
       language: {
+        
         searchPlaceholder: 'Search...',
         sSearch: '',
         lengthMenu: '_MENU_ items/page',
@@ -282,6 +283,8 @@ $(function(){
 
     $('#example2').DataTable({
       responsive: true,
+      pageLength: 15,
+      lengthMenu: [[10,15,25,50, 100, -1], [20,15,25, 50, 100, "All"]],
       language: {
         searchPlaceholder: 'Search...',
         sSearch: '',

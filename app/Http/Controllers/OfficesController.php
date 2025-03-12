@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OfficesModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,8 +14,8 @@ class OfficesController extends Controller
      */
     public function index()
     {
-        $offices=OfficesModel::get();
-        return view('admin_panel.global_setting.define_office.index',compact('offices'));
+        $offices=(new GlobalSettingRepo())->offices();
+        return view('admin_panel.global_setting.defin-office',compact('offices'));
     }
 
     /**
@@ -45,30 +46,23 @@ class OfficesController extends Controller
         $newData->fill($validator->validated());
       if($newData->save())
       {
-        return response()->json(['success'=>'Office Created Successfully Done']);
+        return back()->with(['success'=>'Office Created Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Office not Created Successfully Done']);
+        return back()->with(['error'=>'Office not Created Successfully Done']);
 
       }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $office=OfficesModel::find($id);
-        return response()->json($office);
+        return view('admin_panel.global_setting.Edit.edit-office',compact('office'));
     }
 
     /**
@@ -90,11 +84,11 @@ class OfficesController extends Controller
         $newData->fill($validator->validated());
       if($newData->save())
       {
-        return response()->json(['success'=>'Office updated  Successfully Done']);
+        return back()->with(['success'=>'Office updated  Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Office not updated Successfully Done']);
+        return back()->with(['error'=>'Office not updated Successfully Done']);
 
       }
     }
@@ -102,17 +96,4 @@ class OfficesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $result=OfficesModel::find($id)->delete();
-        if($result)
-      {
-        return response()->json(['success'=>'Office deleted Successfully Done']);
-      }
-      else
-      {
-        return response()->json(['error'=>'Office not deleted Successfully Done']);
-
-      }
-    }
-}
+   }

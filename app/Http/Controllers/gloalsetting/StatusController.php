@@ -4,6 +4,7 @@ namespace App\Http\Controllers\gloalsetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\StatusModel;
+use App\Repository\MasterAdmin\GlobalSetting\GlobalSettingRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +15,8 @@ class StatusController extends Controller
      */
     public function index()
     {
-        return view('admin_panel.global_setting.define_status.index');
+        $status=(new GlobalSettingRepo())->status();
+        return view('admin_panel.global_setting.definestatus',compact('status'));
     }
 
     /**
@@ -46,31 +48,24 @@ class StatusController extends Controller
         $newstatus->fill($validator->validated());
       if($newstatus->save())
       {
-        return response()->json(['success'=>'Status Created Successfully Done']);
+        return back()->with(['success'=>'Status Created Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Status is not Created Successfully Done']);
+        return back()->with(['error'=>'Status is not Created Successfully Done']);
 
       }
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+  
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $status=StatusModel::find($id);
-        return response()->json($status);
+        return view('admin_panel.global_setting.Edit.edit-status',compact('status'));
     }
 
     /**
@@ -94,28 +89,15 @@ class StatusController extends Controller
         $newstatus->fill($validator->validated());
       if($newstatus->save())
       {
-        return response()->json(['success'=>'Status updated Successfully Done']);
+        return back()->with(['success'=>'Status updated Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Status is not updated Successfully Done']);
+        return back()->with(['error'=>'Status is not updated Successfully Done']);
 
       }
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $result=StatusModel::find($id)->delete();
-        if($result)
-        {
-            return response()->json(['success'=>'Status Deleted Successfully Done']);
-        }
-        else{
-            return response()->json(['error'=>'Status Not  Deleted Successfully Done']);
-        }
-    }
+
 }
