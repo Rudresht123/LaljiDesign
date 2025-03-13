@@ -33,6 +33,7 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+          'category_id'=>'required',
             'status_name' => 'required|string',
             'slug' => 'required|string',
             'remark' => 'nullable|string',
@@ -74,6 +75,7 @@ class StatusController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+          'category_id'=>'required',
             'status_name' => 'required|string',
             'slug'=>'required|string',  
             'remark' => 'required|string',

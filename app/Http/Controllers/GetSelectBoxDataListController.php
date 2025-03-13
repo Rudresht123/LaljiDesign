@@ -24,7 +24,10 @@ class GetSelectBoxDataListController extends Controller
                 $status=(new GlobalSettingRepo())->substatus(['main_status_id'=>$request->status]);
                 if($status)
                 {
-                    $data=$status->pluck('substatus_name','id');
+                    $data = $status->mapWithKeys(function ($item) {
+                        return [$item->id => ['name' => $item->substatus_name, 'slug' => $item->slug]];
+                    });
+                    
                 }
              }
         return response()->json($data);

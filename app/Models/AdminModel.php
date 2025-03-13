@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomResetPassword;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PermissionGroup;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 class AdminModel extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -84,9 +85,7 @@ class AdminModel extends Authenticatable
         $permissions = $this->userPermissions()
                             ->join('cms_group_permissions', 'user_permissions.permission_id', '=', 'cms_group_permissions.id')
                             ->pluck('cms_group_permissions.permission_route')
-                            ->toArray();
-
-                            Log::info($permissionName);              
+                            ->toArray();             
         return in_array($permissionName, $permissions);
     }
   
@@ -96,7 +95,7 @@ class AdminModel extends Authenticatable
     }
     public function permissionsinsert()
 {
-    return $this->hasMany(PermissionModel::class, 'user_id'); // Adjust table/foreign key
+    return $this->hasMany(UserPermissionModel::class, 'user_id'); // Adjust table/foreign key
 }
     
 

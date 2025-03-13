@@ -56,7 +56,7 @@
         </ol>
     </nav>
     {{-- table section start here --}}
-    <div class="custom-card col-lg-11 mx-auto">
+    <div class="custom-card col-lg-12 mx-auto">
         <div class="panel panel-default">
             <div class="panel-heading"><b><i class="fa fa-list"></i> Create Software Users</b></div>
             <div class="panel-body pd-b-0 row">
@@ -66,7 +66,7 @@
                         <div class="col-sm-12">
                             <form action="{{ route('admin.users-roles.store-create-users') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <fieldset class="form-fieldset">
+                                <fieldset class="form-fieldset mt-3">
                                     <legend>Software User Information</legend>
                                     <div class="row">
                                         <div class="col-sm-3">
@@ -141,104 +141,65 @@
 
                     {{-- table section start here --}}
                     <div class="row mt-4">
-                        <div class="col-sm-12">
-                            <table class="table table-bordered">
-                                <thead class="bg-light">
-                                    <th class="fw-bold w-25">Permission Name</th>
-                                    <th class="fw-bold  text-center">Permission</th>
-                                </thead>
-                                <tbody>
-                                    @php 
-                                    $count=0;
-                                    @endphp
-                                    @foreach ($permissions as $permission)
-                                    <tr style="height: 30px !important;">
-                                        <td class="fs-10 p-2">{{ $permission->permission_group ?? '' }}</td>
-                                        <td class="p-2 text-center">
-                                            <input type="checkbox" class="group-checkbox" data-group-id="{{$permission->id}}" name="" id="">
-                                        </td>
-                                        <td class="w-75" >
-                                            <div class="accordion" id="accordion{{ $permission->permission_group ?? '' }}" >
-                                             
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header" id="heading{{ $count }}">
-                                                            <button class="accordion-button fs-10 {{ ++$count != 0 ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $count }}" aria-expanded="{{ $count == 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $count }}">
-                                                                {{ $permission->permission_group ?? '' }}
-                                                            </button>
-                                                        </h2>
-                                                        <div id="collapse{{ $count }}" class="accordion-collapse collapse {{ $count == 0 ? 'show' : '' }}" aria-labelledby="heading{{ $count }}" data-bs-parent="#accordion{{ $permission->permission_group ?? '' }}">
-                                                            <div class="accordion-body">
-                                                                <div class="row">
-                                                                    <div class="col-lg-12">
-                                                                            <div class="row px-2">
-                                                                                <table class="w-100">
-                                                                                    <div class="col-sm-3">
-                                                                                    <tr>
-                                                                                @foreach ($permission->cmsPermissionGroups as $groupPermission)
-                                                                               
-                                                                                    @if ($permission->permission_group_slug == 'attorneys')
-                                                                                        @php
-                                                                                            $attorney = $attoerneys->firstWhere('id', $groupPermission->permission_route);
-                                                                                        @endphp
-                                                                                        @if ($attorney)
-                                                                                            <div class="col p-1">
-                                                                                                <td>
-                                                                                                <span class="d-flex  align-item-center fw-bold"><input type="checkbox"  name="permissions[]" value="{{$groupPermission->id ?? ''}}" class="permission-checkbox custom-control-input" data-group-id="{{$permission->id}}" id="{{$attorney->id}}">
-                                                                                                    &nbsp;  {{ $attorney->attorneys_name }}</span></td>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    @elseif ($permission->permission_group_slug == 'category')
-                                                                                        @php
-                                                                                            $mainCategory = $mainCategory->firstWhere('category_slug', $groupPermission->permission_route);
-                                                                                        @endphp
-                                                                                        @if ($mainCategory)
-                                                                                            <div class="col  p-1">
-                                                                                                <td>
-                                                                                                    <span class="d-flex  align-item-center fw-bold"> <input type="checkbox" name="permissions[]" value="{{$groupPermission->id ?? ''}}" class=" permission-checkbox custom-control-input" data-group-id="{{$permission->id}}" id="{{$mainCategory->id}}">
-                                                                                                        &nbsp; {{ $mainCategory->category_name }}</span>
-                                                                                                    </td>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                        @else
-                                                                                        <div class="col">
-                                                                                          <td>
-                                                                                                <span class="d-flex justify-content-center align-item-center fw-bold"><input type="checkbox" name="permissions[]"  value="{{$groupPermission->id ?? ''}}" class=" permission-checkbox custom-control-input" data-group-id="{{$permission->id}}" id="{{$permission->id}}">
-                                                                                                    &nbsp;  {{$groupPermission->permission_name ?? ''}}</span>
-                                                                                                </td>
-                                                                                              </div>
-                                                                                        </div>
-                                                                                    @endif
-                                                                               
-                                                                                @endforeach
-                                                                            </div>
-                                                                            </tr>
-                                                                        </table>
-                                                                            </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                               
-                                            </div>
-                                     
-                                    </tr>
+                    <div class="col-sm-12">
+                        @php
+                        $loopcounter=0;
+                        @endphp
+                        @foreach ($permissions as $permission)
+                            <div class="accordion mb-3" id="accordion{{ $permission->permission_group ?? '' }}">
+                                <div class="accordion-item">
+                                    <h1 class="accordion-header "  id="heading{{ $permission->id }}">
+                                        <button class="accordion-button fs-15 fw-bold text-primary" type="button" 
+                                                data-bs-toggle="collapse" 
+                                                data-bs-target="#collapse{{ $permission->id }}">
+                                            {{ $permission->permission_group ?? '' }}
+                                        </button>
+                                    </h1>
+                                    <div id="collapse{{ $permission->id }}" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                {{-- Group Checkbox --}}
+                                                <div class="col-sm-12  mb-2 mx-1">
+                                                    <input type="checkbox" class="group-checkbox"
+                                                        data-group-id="{{ $permission->id }}">
+                                                    <label><strong>Select All</strong></label>
+                                                </div>
 
-                                 
-                                @endforeach
-                                
-                                </tbody>
-                            </table>
-                        </div>
+                                                @foreach ($permission->cmsPermissionGroups as $groupPermission)
+                                                <div class="col-lg-3 pd-b-2 pd-t-2 pd-l-10 pd-r-10 float-left text-uppercase">
+                                           <div class="container-fluid  bg-gray-100 rounded-2 bd bd-1 pd-l-10 pd-t-5 pd-b-5">
+                                                <table class="col-lg-12 p-0 m-0 ">
+                                                   <tr>
+                                                       <td class="pt-2"><input type="checkbox"   name="permissions[]"   class="permission-checkbox"   value="{{ $groupPermission->id ?? '' }}"    data-group-id="{{ $permission->id }}"   ></td>
+                                                       <td><input type="text" class="form-control1 bd-0 pd-b-0 pd-t-0 bg-gray-100" value="{{ $groupPermission->permission_name ?? '' }}"></td>
+                                                       <td><input type="text" class="form-control1 bd-0 bg-success-light wd-30 text-center rounded-1"  value="{{ ++$loopcounter}}"></td>
+
+                                                   </tr>
+                                               </table>
+                                           </div>
+
+                                       </div>
+                                                 
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
+                </div>
+
                     {{-- table section end here --}}
 
 
                     {{-- button section start here --}}
                     <div class="row">
                         <div class="col-sm-12 d-flex justify-content-end">
-                            <input type="reset" class="btn btn-danger me-2">
-                            <input type="submit" class="btn btn-primary"  value="Create User"> 
+                         
+                            <button type="reset" class="btn btn-danger me-2"><i class="fa fa-times"></i> Create User</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Create User</button>
+                           
                         </div>
                     </div>
                     {{-- button section end here --}}

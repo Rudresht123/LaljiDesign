@@ -43,6 +43,13 @@ class DeleteRecord extends Controller
     public function deleteExcelcolumns($id){
         return $this->deleteRecord('excelcolumn_name', $id); 
     }
+    public function deletePermissionGroup($id)
+    {
+        return $this->deleteRecord('cms_permission_groups', $id); 
+    }
+    public function deleteSoftwareUsers($id){
+        return $this->deleteRecord('admins', $id); 
+    }
     private function deleteRecord($table_name, $id)
     {
         try {

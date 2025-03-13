@@ -17,7 +17,7 @@ class PermissionGroupController extends Controller
     public function index()
     {
         $groups=(new GlobalSettingRepo())->permissionGroups();
-        return view("admin_panel.global_setting.define-permission-group");
+        return view("admin_panel.global_setting.define-permission-group",compact('groups'));
     }
 
     /**
@@ -47,11 +47,11 @@ class PermissionGroupController extends Controller
         $newstatus->fill($validator->validated());
       if($newstatus->save())
       {
-        return response()->json(['success'=>'Permission Group Created Successfully Done']);
+        return back()->with(['success'=>'Permission Group Created Successfully Done']);
       }
       else
       {
-        return response()->json(['error'=>'Permission Group is not Created Successfully Done']);
+        return back()->with(['error'=>'Permission Group is not Created Successfully Done']);
 
       }
     }
@@ -70,7 +70,7 @@ class PermissionGroupController extends Controller
     public function edit(string $id)
     {
         $permissiongroup=PermissionGroup::find($id);
-        return response()->json($permissiongroup);
+        return view("admin_panel.global_setting.Edit.edit-permission-group",compact('permissiongroup'));
     }
 
     /**
@@ -93,7 +93,7 @@ class PermissionGroupController extends Controller
         $updateStatus = PermissionGroup::find($id);
     
         if (!$updateStatus) {
-            return response()->json([
+            return back()->with([
                 'error' => 'Permission Group  not found'
             ], 404);  // Return a 404 if the record isn't found
         }
@@ -102,30 +102,15 @@ class PermissionGroupController extends Controller
         $updateStatus->fill($validator->validated());
     
         if ($updateStatus->save()) {  // Using save() instead of update() to handle new updates
-            return response()->json(['success' => 'Permission Group  updated successfully']);
+            return back()->with(['success' => 'Permission Group  updated successfully']);
         } else {
-            return response()->json(['error' => 'Permission Group  update failed']);
+            return back()->with(['error' => 'Permission Group  update failed']);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        
-        $permission_group = PermissionGroup::find($id);
-
-        if($permission_group){
-            if($permission_group->delete()){  // Using save() instead of update() to handle new updates
-                return response()->json(['success' => 'Permission Group  deleted successfully']);
-            } else {
-                return response()->json(['error' => 'Permission Group  not deleted successfully']);
-            }
-        }
-        else{
-            return response()->json(['error' => 'Permission Group  not Find successfully']);
-        }
-    }
+  
     }
 

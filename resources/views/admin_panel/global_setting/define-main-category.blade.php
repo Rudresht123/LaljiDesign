@@ -32,7 +32,7 @@
         <div class="panel-body pd-b-0 row">
 
 
-            <div class="col-lg-2">
+            <div class="col-lg-2 pt-lg-5">
                 @if(auth()->user()->hasPermission('admin.global-setting.create-main-category'))
                 <button type="button" data-bs-toggle="modal" data-bs-target="#addModelsData" class="btn btn-block mg-t-10 btn-outline-primary btn-sm rounded-pill w-100"><i class="fa fa-plus"></i> Add New</button>
                 @endif

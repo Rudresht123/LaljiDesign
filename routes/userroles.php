@@ -18,5 +18,4 @@ Route::get('admin/global_setting/user-roles/permission-group',[PermissionGroupCo
 Route::post('admin/global_setting/permission-group',[PermissionGroupController::class,'store'])->name('admin.global-setting.create-permission-group')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::get('admin/global_setting/permission-group/{id}',[PermissionGroupController::class,'edit'])->name('admin.global-setting.edit-permission-group')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::put('admin/global_setting/permission-group/{id}',[PermissionGroupController::class,'update'])->name('admin.global-setting.update-permission-group')->middleware(['auth','verified']);
-Route::delete('admin/global_setting/permission-group/{id}',[PermissionGroupController::class,'destroy'])->name('admin.global-setting.destroy-permission-group')->middleware(['auth','verified']);
 

@@ -2,7 +2,12 @@
     @csrf
     <fieldset class="form-fieldset m-3">
         <legend>Status Information</legend>
-        <div class="gorm-group ">
+        <div class="row">
+        <div class="col-lg-6">
+            <label for="" class="form-label">Category</label>
+            @include('admin_panel.components.GlobalSetting.category-import',['class'=>'form-select input-sm','name'=>'category_id'])
+        </div>
+        <div class="gorm-group col-lg-6">
             <label for="" class="form-label">Status Name <span
                     class="text-danger">*</span></label>
             <input type="text" name="status_name" autocomplete="off" class="form-control input-sm"
@@ -30,6 +35,7 @@
                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
+        </div>
         </div>
     </fieldset>
 </form>

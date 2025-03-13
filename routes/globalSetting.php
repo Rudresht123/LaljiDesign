@@ -161,6 +161,8 @@ Route::get('RecordDelete/{id}/whatsappremarks/delete',[DeleteRecord::class,'dele
 Route::get('RecordDelete/{id}/consultant/delete',[DeleteRecord::class,'deleteConsultant'])->name('RecordDelete.Consultant');
 Route::get('RecordDelete/{id}/dealers/delete',[DeleteRecord::class,'deleteDealers'])->name('RecordDelete.Dealers');
 Route::get('RecordDelete/{id}/excelcolumns/delete',[DeleteRecord::class,'deleteExcelcolumns'])->name('RecordDelete.Excelcolumns');
+Route::get('RecordDelete/{id}/permissiongroup/delete',[DeleteRecord::class,'deletePermissionGroup'])->name('RecordDelete.PermissionGroup');
+Route::get('RecordDelete/{id}/users/delete',[DeleteRecord::class,'deleteSoftwareUsers'])->name('RecordDelete.deleteSoftwareUsers');
 
 
 

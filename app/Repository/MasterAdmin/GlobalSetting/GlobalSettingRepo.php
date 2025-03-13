@@ -20,24 +20,24 @@ use App\Models\TradeMarkClassModel;
 
 class GlobalSettingRepo extends RepositoryContract
 {
-    public function finanacialyear(){
-        return FinancialYearModel::query()->record()->get();
+    public function finanacialyear($search=null){
+        return FinancialYearModel::query()->where($search)->record()->get();
     }
-    public function maincategory(){
-        return MainCategoryModel::query()->record()->get();
+    public function maincategory($search = null){
+        return MainCategoryModel::query()->where($search)->record()->get();
     }
-    public function ipclasses(){
-        return TradeMarkClassModel::query()->record()->get();
+    public function ipclasses($search = null){
+        return TradeMarkClassModel::query()->where($search)->record()->get();
     }
-    public function attorneys()
+    public function attorneys($search = null)
     {
-        return AttorneysModel::query()->record()->get();
+        return AttorneysModel::query()->where($search)->record()->get();
     }
-    public function consultants(){
-        return ConsultantModel::query()->record()->get();
+    public function consultants($search = null){
+        return ConsultantModel::query()->where($search)->record()->get();
     }
-    public function deallers(){
-        return DeallerModel::query()->record()->get();
+    public function deallers($search = null){
+        return DeallerModel::query()->where($search)->record()->get();
     }
     public function status($search=null){
         return StatusModel::query()->where($search)->record()->get();
@@ -45,12 +45,12 @@ class GlobalSettingRepo extends RepositoryContract
     public function substatus($search=null){
         return SubStatusModel::query()->where($search)->record()->get();
     }
-    public function offices()
+    public function offices($search = null)
     {
-        return OfficesModel::query()->record()->get();
+        return OfficesModel::query()->where($search)->record()->get();
     }
     public function subcategory($search=null){
-        return SubcategoryModel::query()->record()->get();
+        return SubcategoryModel::query()->where($search)->record()->get();
     }
     public function financialyears()
     {
@@ -58,13 +58,13 @@ class GlobalSettingRepo extends RepositoryContract
     }
     public function remarks($search=null)
     {
-        return RemarksModel::query()->record()->get();
+        return RemarksModel::query()->where($search)->record()->get();
     }
     public function whatsappremarks()
     {
         return ClientRemarksModel::query()->record()->get();
     }
-    public function permissionGroups(){
-        return PermissionGroup::query()->record()->get();
+    public function permissionGroups($search = null){
+        return PermissionGroup::query()->where($search)->record()->get();
     }
 }

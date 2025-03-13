@@ -29,7 +29,7 @@
     <div class="panel panel-default">
         <div class="panel-heading"><b><i class="fa fa-list"></i> Status List</b></div>
         <div class="panel-body pd-b-0 row">
-            <div class="col-lg-2 mb-3">
+            <div class="col-lg-2 mb-3 pt-lg-5">
                 @if(auth()->user()->hasPermission('admin.global-setting.create-status'))
                 <button type="button" data-bs-toggle="modal" data-bs-target="#addModelsData" class="btn btn-block mg-t-10 btn-outline-primary btn-sm rounded-pill w-100"><i class="fa fa-plus"></i> Add New</button>
                 @endif

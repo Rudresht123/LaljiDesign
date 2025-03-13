@@ -29,7 +29,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b><i class="fa fa-list"></i> Office List</b></div>
             <div class="panel-body pd-b-0 row">
-                <div class="col-lg-2 mb-3">
+                <div class="col-lg-2 mb-3 pt-lg-5">
                  
 
                 @if(auth()->user()->hasPermission('admin.global_setting.create-office'))
@@ -92,48 +92,5 @@
     <!-- Button trigger modal -->
 
 
-   
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i>
-                        Edit
-                        Office</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <form id="editOfficeForm" method="POST">
-                        @csrf
-                        <div class="gorm-group hidden">
-                            <label for="" class="form-label">Office ID <span class="text-danger">*</span></label>
-                            <input type="text" id="office_id" readonly name="office_id" autocomplete="off"
-                                class="form-control input-sm" required placeholder="Enter Your Office name...">
-                        </div>
-                        <div class="gorm-group hidden">
-                            <label for="" class="form-label">Office Name <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" id="office_name" name="office_name" autocomplete="off"
-                                class="form-control input-sm" required placeholder="Enter Your Office name...">
-                        </div>
-                        <div class="gorm-group ">
-                            <label for="" class="form-label">Status<span class="text-danger">*</span></label>
-                            <select name="status" class="form-select" id="">
-                                <option value="yes">Active</option>
-                                <option value="no">De-Active</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    {{-- end here add modal --}}
    
 @endsection

@@ -92,7 +92,7 @@
                                     <div class="row mb-2"><div class=" pt-2 col-4 fs-10"><b>Deal With</b></div><div class="col-8"><div class="bg-light ht-35 p-2 fs-10">{{$clientdetail->deal_with ? $clientdetail->dealWith->dealler_name : ''}}</div></div></div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="row mb-2"><div class=" pt-2 col-4 fs-10"><b>Office</b></div><div class="col-8"><div class="bg-light ht-35 p-2 fs-10">{{$clientdetail->office->office_name ? $clientdetail->office->office_name : ''}}</div></div></div>
+                                    <div class="row mb-2"><div class=" pt-2 col-4 fs-10"><b>Office</b></div><div class="col-8"><div class="bg-light ht-35 p-2 fs-10">{{isset($clientdetail->office->office_name)&& $clientdetail->office->office_name ? $clientdetail->office->office_name : ''}}</div></div></div>
                                 </div>
                                 
                                 <div class="col-lg-6">
