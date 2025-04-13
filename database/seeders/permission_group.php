@@ -33,6 +33,7 @@ class permission_group extends Seeder
             ['permission_group' => 'Pdf Setting', 'permission_group_slug' => 'print_pdf'],
             ['permission_group' => 'Email Template', 'permission_group_slug' => 'print_pdf'],
             ['permission_group' => 'Client Status History', 'permission_group_slug' => 'client_status_history'],
+            ['permission_group' => 'Client DPP Report', 'permission_group_slug' => 'client_dpp_report'],
         ];
 
         foreach ($data as $item) {

@@ -13,13 +13,13 @@ class CommanRepository extends RepositoryContract
      * Create a new class instance.
      */
 public function getDppClientData($search=null){
-return TrademarkUserModel::query()->recorddata()->get();
+return TrademarkUserModel::query()->record()->get();
   }
   public function getFinancialyear($search=null){
     return FinancialYearModel::where('is_active','yes')->get();
   }
   public function getCategory($search=null){
-    return MainCategoryModel::query()->recorddata()->get();
+    return MainCategoryModel::query()->record()->get();
   }
   public function getDppClientDataSearch($search = null)
   {

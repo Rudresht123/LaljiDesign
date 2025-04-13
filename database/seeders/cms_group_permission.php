@@ -87,8 +87,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>3,
-                 'permission_name' => 'Attorney Block',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Attorney Delete',
+                 'permission_route' => 'RecordDelete.attoerney',
              ],
         
              [
@@ -108,8 +108,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>4,
-                 'permission_name' => 'Block Category',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Category',
+                 'permission_route' => 'RecordDelete.MainCategory',
              ],
          
              [
@@ -129,13 +129,13 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>5,
-                 'permission_name' => 'Block Financial Year',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Financial Year',
+                 'permission_route' => 'RecordDelete.FinancialYear',
              ],
         
              [
                'permission_group'=>6,
-                 'permission_name' => 'Show Sub',
+                 'permission_name' => 'Show Sub Category',
                  'permission_route' => 'admin.global-setting.sub-category',
              ],
              [
@@ -150,8 +150,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>6,
-                 'permission_name' => 'Block Sub Category',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Sub Category',
+                 'permission_route' => 'RecordDelete.SubCategory',
              ],
          
              [
@@ -171,8 +171,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>7,
-                 'permission_name' => 'Block Status',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Status',
+                 'permission_route' => 'RecordDelete.status',
              ],
         
              [
@@ -192,8 +192,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>8,
-                 'permission_name' => 'Block Remarks',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Remarks',
+                 'permission_route' => 'RecordDelete.Remarks',
              ],
         
              [
@@ -213,8 +213,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>9,
-                 'permission_name' => 'Block Dealer',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Dealer',
+                 'permission_route' => 'RecordDelete.Dealers',
              ],
        
              [
@@ -234,29 +234,29 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>10,
-                 'permission_name' => 'Block Consultant',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Consultant',
+                 'permission_route' => 'RecordDelete.Consultant',
              ],
        
              [
                'permission_group'=>11,
-                 'permission_name' => 'Show Column',
+                 'permission_name' => 'Show Excel Column',
                  'permission_route' => 'admin.global-setting.excelcolumn',
              ],
              [
                'permission_group'=>11,
-                 'permission_name' => 'Create Column',
+                 'permission_name' => 'Create Excel Column',
                  'permission_route' => 'admin.global-setting.create-excelcolumn',
              ],
              [
                'permission_group'=>11,
-                 'permission_name' => 'Edit Column',
+                 'permission_name' => 'Edit Excel Column',
                  'permission_route' => 'admin.global-setting.edit-excelcolumn',
              ],
              [
                'permission_group'=>11,
-                 'permission_name' => 'Block Column',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Excel Column',
+                 'permission_route' => 'RecordDelete.Excelcolumns',
              ],
        
              [
@@ -276,8 +276,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>12,
-                 'permission_name' => 'Block Office',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Office',
+                 'permission_route' => 'RecordDelete.office',
              ],
        
              [
@@ -297,8 +297,8 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>13,
-                 'permission_name' => 'Block Template',
-                 'permission_route' => 'admin.block-data',
+                 'permission_name' => 'Delete Template',
+                 'permission_route' => 'RecordDelete.PDFTemplate',
              ],
         
              [
@@ -328,6 +328,21 @@ class cms_group_permission extends Seeder
                  'permission_route' => 'admin.excels-import.clients-export',
              ],
              [
+              'permission_group'=>20,
+                'permission_name' => 'Show DPP Report Form',
+                'permission_route' => 'admin.client-dpp-reports',
+            ],
+            [
+              'permission_group'=>20,
+                'permission_name' => 'Get DPP Report Data',
+                'permission_route' => 'admin.client-get-dpp-reports',
+            ],
+            [
+              'permission_group'=>20,
+                'permission_name' => 'Download DPP Report',
+                'permission_route' => 'admin.dpp-repots.export',
+            ],
+             [
                'permission_group'=>15,
                  'permission_name' => 'Print PDF',
                  'permission_route' => 'admin.client-details.print-pdf',
@@ -350,9 +365,14 @@ class cms_group_permission extends Seeder
              ],
              [
                'permission_group'=>16,
-                 'permission_name' => 'Block Email Template',
+                 'permission_name' => 'Delete Email Template',
                  'permission_route' => 'admin.block-data',
              ],
+             [
+              'permission_group'=>17,
+                'permission_name' => 'Show Client Status History',
+                'permission_route' => 'admin.status.client-status',
+            ],
              [
               'permission_group'=>18,
                 'permission_name' => 'Show User Roles',
@@ -369,19 +389,29 @@ class cms_group_permission extends Seeder
                 'permission_route' => 'admin.users-roles.edit-users',
             ],
             [
+              'permission_group'=>18,
+                'permission_name' => 'Delete Users',
+                'permission_route' => 'RecordDelete.deleteSoftwareUsers',
+            ],
+            [
               'permission_group'=>19,
                 'permission_name' => 'Show Permission Group',
                 'permission_route' => 'admin.user-roles.permission-group',
             ],
             [
-              'permission_group'=>18,
+              'permission_group'=>19,
                 'permission_name' => 'Create Permission Group',
                 'permission_route' => 'admin.global-setting.create-permission-group',
             ],
             [
-              'permission_group'=>18,
+              'permission_group'=>19,
                 'permission_name' => 'Edit Permission Group',
                 'permission_route' => 'admin.global-setting.edit-permission-group',
+            ],
+            [
+              'permission_group'=>19,
+                'permission_name' => 'Delete Permission Group',
+                'permission_route' => 'RecordDelete.PermissionGroup',
             ],
             ];
 

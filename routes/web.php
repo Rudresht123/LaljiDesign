@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\DashboardController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Exports\ExportFileController;
 
 require_once('globalSetting.php');
 require_once('systemsetting.php');
@@ -61,4 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+Route::post('ExportFile', [ExportFileController::class,'exportfile']);
 require __DIR__.'/auth.php';

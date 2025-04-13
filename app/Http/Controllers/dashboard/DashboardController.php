@@ -35,10 +35,11 @@ class DashboardController extends Controller
 
         $data = (new DashboardsData())->upcommingdates();
         $groupedData = $data['groupedData'];
+        $datacount=$data['datacount'];
         $upcommingdates = $data['upcommingdates'];
 
 
-        return view('admin_panel.dashboard', compact('attoernyes', 'groupedData', 'mcategories', 'consultant', 'subcategory', 'upcommingdates'));
+        return view('admin_panel.dashboard.dashboard', compact('attoernyes', 'groupedData', 'mcategories', 'consultant', 'subcategory', 'upcommingdates','datacount'));
     }
 
     /**

@@ -13,6 +13,7 @@ use App\Models\UserPermissionModel;
 use App\Models\CmsGroupPermissionModel;
 use App\Repository\UserPermissionRepo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class DashboardsData extends RepositoryContract
@@ -23,20 +24,25 @@ class DashboardsData extends RepositoryContract
         $endDate = Carbon::now()->addDays(15)->endOfDay();
         if (Auth::user()->role == 'superadmin') {
             $groupedData = TrademarkUserModel::with(['mainCategory:*', 'statusMain:*'])->get();
+            $datacount = TrademarkUserModel::select('attorney_id', DB::raw('count(*) as total'))
+
+                ->groupBy('attorney_id')
+                ->pluck('total', 'attorney_id')
+                ->toArray();
             $upcommingdates = [
                 'Valid UpTo' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
                     'statusMain:id,status_name',
                     'mainCategory:id,category_name'
                 ])
-                ->whereBetween('valid_up_to', [$startDate, $endDate])->get(),
-    
+                    ->whereBetween('valid_up_to', [$startDate, $endDate])->get(),
+
                 'Opposition Hearing Date' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
                     'statusMain:id,status_name',
                     'mainCategory:id,category_name'
                 ])->whereBetween('opposition_hearing_date', [$startDate, $endDate])->get(),
-    
+
                 'Hearing Date' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
                     'statusMain:id,status_name',
@@ -51,15 +57,22 @@ class DashboardsData extends RepositoryContract
             ];
         } else {
             $loggedInUserId = Auth::user()->id;
-    
+
             // Fetch all permission IDs assigned to the logged-in user
             $userPermissionIds = UserPermissionModel::where('user_id', $loggedInUserId)->pluck('permission_id');
-    
+
             $userPermissionRepository = new UserPermissionRepo();
             $groupedData = TrademarkUserModel::with(['mainCategory:*', 'statusMain:*'])
                 ->whereIn('attorney_id', $userPermissionRepository->getAtteorneys())
                 ->get();
-    
+
+            $datacount = TrademarkUserModel::select('attorney_id', DB::raw('count(*) as total'))
+                ->whereIn('attorney_id', $userPermissionRepository->getAtteorneys())
+                ->groupBy('attorney_id')
+                ->pluck('total', 'attorney_id')
+                ->toArray();
+
+
             $upcommingdates = [
                 'Valid UpTo' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
@@ -68,7 +81,7 @@ class DashboardsData extends RepositoryContract
                 ])->whereBetween('valid_up_to', [$startDate, $endDate])
                     ->whereIn('attorney_id', $userPermissionRepository->getAtteorneys())
                     ->get(),
-    
+
                 'Opposition Hearing Date' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
                     'statusMain:id,status_name',
@@ -76,7 +89,7 @@ class DashboardsData extends RepositoryContract
                 ])->whereBetween('opposition_hearing_date', [$startDate, $endDate])
                     ->whereIn('attorney_id', $userPermissionRepository->getAtteorneys())
                     ->get(),
-    
+
                 'Hearing Date' => TrademarkUserModel::with([
                     'Clientonsultant:id,consultant_name',
                     'statusMain:id,status_name',
@@ -89,6 +102,7 @@ class DashboardsData extends RepositoryContract
         return [
             'groupedData' => $groupedData,
             'upcommingdates' => $upcommingdates,
+            'datacount' => $datacount
         ];
     }
 }
