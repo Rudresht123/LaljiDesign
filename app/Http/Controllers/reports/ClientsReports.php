@@ -18,21 +18,21 @@ use Auth;
 
 class ClientsReports extends Controller
 {
-    public function Clients(){
-       
+    public function Clients()
+    {
+
         $userPermissionRepository = new UserPermissionRepo();
         $attorneys = AttorneysModel::whereIn('id', $userPermissionRepository->getAtteorneys())
-        ->where('status', 'yes')
-        ->get();
-    
-            $statuss = StatusModel::where('status', 'yes')->get();
-            $mcategories = MainCategoryModel::whereIn('id',$userPermissionRepository->getCategorys())->where('status', 'yes')->get();
-          
-            $subcategory = SubcategoryModel::where('status', 'yes')->get();
-        
-                   $columns = ExcelColumnNameModel::where('status','yes')->get();
-           
-            return view('admin_panel.reports.client_reports', compact('attorneys', 'statuss', 'mcategories','subcategory','columns'));
-   
+            ->where('status', 'yes')
+            ->get();
+
+        $statuss = StatusModel::where('status', 'yes')->get();
+        $mcategories = MainCategoryModel::whereIn('id', $userPermissionRepository->getCategorys())->where('status', 'yes')->get();
+
+        $subcategory = SubcategoryModel::where('status', 'yes')->get();
+
+        $columns = ExcelColumnNameModel::where('status', 'yes')->get();
+
+        return view('admin_panel.reports.client_reports', compact('attorneys', 'statuss', 'mcategories', 'subcategory', 'columns'));
     }
 }

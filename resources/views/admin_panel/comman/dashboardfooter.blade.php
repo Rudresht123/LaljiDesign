@@ -108,6 +108,7 @@
 </script>
 {{-- logout script section end here --}}
 
+
 {{-- update financial session --}}
 <script type="text/javascript">
 $(document).ready(function(){
@@ -423,6 +424,7 @@ $(document).ready(function() {
 <script src="{{asset('../../assets/jshelper/select-box-list.js')}}"></script>
 <script src="{{asset('../../assets/javascript/export_file_js.js')}}"></script>
 <script src="{{ asset('../../alertify/alertify.js')}}"></script>
+
 <script type='text/javascript'>
     $(document).ready(function () {
         $(".BtnEditUrl").bind( "click", function( event ) {

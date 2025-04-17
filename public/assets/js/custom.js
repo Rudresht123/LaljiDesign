@@ -269,4 +269,16 @@ function downloadexcel(route,method){
     });
 }
 
+function loader(param) {
+    console.log(param);
+    if (param === 'block') {
+        document.getElementById("ld").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    } else if (param === 'none') {
+        document.getElementById("ld").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+}
+
+    
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CopyRight\CopyRightUserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Record;
@@ -21,6 +22,10 @@ class StatusModel extends Record
     public function trademarkUsers()
     {
         return $this->hasMany(TrademarkUserModel::class, 'status');
+    }
+    public function copyrightusers()
+    {
+        return $this->hasMany(CopyRightUserModel::class, 'status');
     }
 
 }

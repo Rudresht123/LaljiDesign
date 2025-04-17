@@ -3,7 +3,7 @@
         <div class="custom-card">
             <div class="panel m-0 p-0  panel-default">
                 <div class="panel-heading  border-bottom mb-2">
-                    <h6 class="tx-14 m-0 p-0"><b class="d-flex"><i class="far fa-address-book me-1"></i> Upcoming
+                    <h6 class="tx-14 m-0 p-0"><b class="d-flex"><i class="far fa-address-book me-1"></i>Trademark Upcoming
                             Last Date</b></h6>
                 </div>
                 <div class="panel-body  pt-0">
@@ -22,7 +22,7 @@
 
                                 $ids= $upcommingdates[$key]->pluck('id')->toArray();
                                 @endphp
-                                <div class="col-lg-12 p-1 cursor-pointer bg-light accordion-btn mt-1"
+                                <div class="col-lg-12 p-1 cursor-pointer  accordion-btn mt-1" style="background-color: #e6f0ff;"
                                     onclick="toggleDetails(this)">
                                     <div class="row p-1 ">
                                         <div class="col-12 pl-4 d-flex justify-content-between">
@@ -44,7 +44,7 @@
                                         <div class="col-lg-12 m-0 p-0">
                                             <table cellspacing="0" cellpadding="0"
                                                 class="table tx-11 mt-1 m-0 p-0 bg-white table-bordered">
-                                                <thead>
+                                                <thead class="bg-light">
                                                     <tr>
                                                         <th class="text-bold nowrap"><b>Application No.</b></th>
                                                         <th class="text-bold nowrap"><b>File Name</b></th>
@@ -70,7 +70,7 @@
                                                     @endphp
                                                     <tr class="fs-10">
                                                         <td class="nowrap">
-                                                            <a href="{{ route('admin.attorney.clientDetails', ['category_slug' => $groupdata->mainCategory->category_slug, 'id' => $groupdata->id]) }}">
+                                                            <a href="{{ route('admin.attorney.clientDetails', ['category_slug' => $groupdata->mainCategory->category_slug, 'id' => $upcommingdate->id]) }}">
                                                                 {{ $upcommingdate->application_no  ?? ''}}
                                                             </a>
                                                         </td>

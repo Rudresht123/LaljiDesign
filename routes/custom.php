@@ -19,6 +19,10 @@ Route::post('admin/clients-reporst/custom-functions/getClients',[CustomFunctions
 // chart controller routes start here
 Route::get('/admin/chart/CategoryWiseUserCount',[ChartController::class,'categoryWiseClientChart'])->name('admin.chart.CategoryWiseUserCount')->middleware(['auth','verified']);
 Route::get('/admin/chart/StatusWiseClientCount',[ChartController::class,'statusWisewiseClientChart'])->name('admin.chart.statusWiseClientChart')->middleware(['auth','verified']);
+Route::get('/admin/chart/attoernyWiseCLientChart',[ChartController::class,'attoernyWiseCLientChart'])->name('admin.chart.attoernyWiseCLientChart')->middleware(['auth','verified']);
+Route::get('/admin/chart/perticularattoernywiseChart/{id}',[ChartController::class,'perticularattoernywiseChart'])->name('admin.chart.perticularattoernywiseChart')->middleware(['auth','verified']);
+
+
 
 
 

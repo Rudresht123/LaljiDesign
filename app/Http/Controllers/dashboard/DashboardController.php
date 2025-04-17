@@ -31,15 +31,20 @@ class DashboardController extends Controller
         $attoernyes = AttorneysModel::where('status', 'yes')->get();
 
         $groupedData = collect();
-        $upcommingdates = []; 
-
+        $upcommingdates = [];
+        
         $data = (new DashboardsData())->upcommingdates();
+        $copyrightdatas = (new DashboardsData())->copyrightupcommingdates();
         $groupedData = $data['groupedData'];
-        $datacount=$data['datacount'];
+        $datacount = $data['datacount'];
         $upcommingdates = $data['upcommingdates'];
 
+        $copyrightgroupedData = $copyrightdatas['groupedData'];
+        $copyrightdatacount = $copyrightdatas['datacount'];
+        $copyrightupcommingdates = $copyrightdatas['upcommingdates'];
 
-        return view('admin_panel.dashboard.dashboard', compact('attoernyes', 'groupedData', 'mcategories', 'consultant', 'subcategory', 'upcommingdates','datacount'));
+
+        return view('admin_panel.dashboard.dashboard', compact('attoernyes', 'groupedData', 'mcategories', 'consultant', 'subcategory', 'upcommingdates', 'datacount','copyrightgroupedData','copyrightdatacount','copyrightupcommingdates'));
     }
 
     /**

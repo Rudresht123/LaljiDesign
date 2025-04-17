@@ -249,142 +249,23 @@
             </div>
     </fieldset>
 
+    <!-- contact infomation balde file -->
+    @include('admin_panel.users.Forms.FormsTemplate.ContactInformation')
+    <!-- contact infomation balde file -->
 
 
 
-    <!-- contact information start here -->
-    <fieldset class="form-fieldset mt-4">
-        <legend>Contact Information</legend>
-        <div class="row">
-            <div class="col-sm-6" id="number-container">
-                <label for="" class="form-label">Phone Number<span class="text-danger">*</span></label>
-
-                <div class="row">
-                    <div class="col-lg-12 d-flex">
-                        <input type="text" value="{{ old('phone_no') }}" class="form-control" required
-                            name="phone_no[]" placeholder="Phone Number..">
-                        <button type="button" class="btn btn-primary ms-2" id="add-number"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-            </div>
+    <!-- consultant infomation balde file -->
+    @include('admin_panel.users.Forms.FormsTemplate.ConsultantInformation')
 
 
-            <div class="col-sm-6" id="email-container">
-                <label for="" class="form-label">Email ID</label>
-                <div class="row">
-                    <div class="col-lg-12 d-flex">
-                        <input type="email" value="{{ old('email_id') }}" class="form-control"
-                            name="email_id[]" placeholder="Please Enter Email Here..">
-                        <button type="button" class="btn btn-primary ms-2" id="add-email"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </fieldset>
-    <!-- contact information end here -->
-
-
-
-    <fieldset class="form-fieldset mt-4">
-        <legend>Consultant Information</legend>
-        <div class="row">
-            <div class="col-sm-4">
-                <label for="" class="form-label">Consultant Name<span
-                        class="text-danger">*</span></label>
-                <select name="consultant" required class="form-select" id="consultant">
-                    <option value="">**Please Select Consultant Name..</option>
-                    @foreach ($consultant as $consultant)
-                    <option class="capitalize" value="{{ $consultant->id ?? '' }}">
-                        {{ $consultant->consultant_name ?? '' }}
-                    </option>
-                    @endforeach
-                </select>
-
-            </div>
-            <div class="col-sm-4">
-                <label for="" class="form-label">Deal With</label>
-
-                <select name="deal_with" class="form-select">
-                    <option value="">**Please Select Dealler Name..</option>
-                    @foreach ($dealWith as $dealw)
-                    <option class="capitalize" value="{{ $dealw->id ?? '' }}">{{ $dealw->dealler_name ?? '' }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label for="" class="form-label">Filed By<span
-                        class="text-danger">*</span></label>
-                <input type="text" class="form-control" readonly required
-                    value="{{ $attorney->attorneys_name ? $attorney->attorneys_name : '' }}"
-                    name="filed_by" placeholder="Please Enter Filed Name..">
-            </div>
-
-            <div class="col-sm-6">
-                <label for="" class="form-label">Remarks</label>
-                <select name="remarks" class="form-select select2" id="remarks">
-                    <option value="">**Please Select Remarks</option>
-                    @foreach ($remarks as $remark)
-                    <option class="capitalize" value="{{ $remark->id ? $remark->id : '' }}">
-                        {{ $remark->remarks ? $remark->remarks : '' }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-sm-6 ">
-                <label for="" class="form-label">Client Whatsapp Remarks</label>
-                <select name="client_remarks" class="form-control select2 " id="client_remarks">
-                    <option value="">**Please Select Remarks</option>
-                    @foreach ($clientRemarks as $cleintRemark)
-                    <option class="capitalize" value="{{ $cleintRemark->id ? $cleintRemark->id : '' }}">
-                        {{ $cleintRemark->client_remarks ? $cleintRemark->client_remarks : '' }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </fieldset>
+    <!-- consultant infomation balde file -->
 
     {{-- communication information fieldset --}}
-    <fieldset class="form-fieldset mt-4">
-        <legend>Client Communication Information</legend>
-        <div class="row">
-            <div class="col-sm-4">
-                <label for="" class="form-label">IP Field <span
-                        class="text-danger">*</span></label>
-                <input type="text" value="{{ $category->category_name }}" name="ip_field"
-                    readonly class="form-control" placeholder="Name Of IP Field...">
-            </div>
+    @include('admin_panel.users.Forms.FormsTemplate.ClientCommunicationInformation')
+    {{-- communication information fieldset --}}
 
-            <div class="col-sm-4">
-                <label for="" class="form-label">Email Recived Date</label>
-                <input type="text" value="{{ old('email_recived_date') }}"
-                    class="form-control datepicker" name="mail_recived_date"
-                    placeholder="Email Recived Date 2..">
-            </div>
-            <div class="col-sm-4">
-                <label for="" class="form-label">Email Recived Date 2</label>
-                <input type="text" value="{{ old('email_recived_date_2') }}"
-                    class="form-control datepicker" name="mail_recived_date_2"
-                    placeholder="Email Recived Date 2..">
-            </div>
 
-            <div class="col-sm-8">
-                <label for="" class="form-label">Email Remarks</label>
-                <textarea class="form-control" name="email_remarks" placeholder="Please Enter Client Email Remarks..."
-                    id="" cols="1" rows="1">{{old('email_remarks')}}</textarea>
-
-            </div>
-
-            <div class="col-sm-12">
-                <label for="" class="form-label">Client Communication</label>
-                <textarea class="form-control" name="client_communication"
-                    placeholder="Please Enter Client Communication Feedback Here..." id="" cols="2" rows="2">{{old('client_communication')}}</textarea>
-            </div>
-
-        </div>
-    </fieldset>
     <div class="row mt-3">
         <div class="col-lg-6">
             <div class="form-check">
@@ -429,16 +310,17 @@
         $('#status').on('change', function(e) {
             e.preventDefault();
             let statusSlug = $(this).find(':selected').data('slug');
-           
             getOpptionsforStatus(statusSlug);
         });
 
         // Event listener for #opponent_applicant_name dropdown
         $('#opp_app_name').on('change', function(e) {
             e.preventDefault();
+        
             let statusSlug = $('#status').find(':selected').data('slug'); // Fixed missing '#' in selector
             const getvalue = $(this).val();
             getOpponentApplicantNameNumber(getvalue, statusSlug);
+        
         });
     });
 </script>

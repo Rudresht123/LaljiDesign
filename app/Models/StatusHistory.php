@@ -11,6 +11,7 @@ class StatusHistory extends Model
 
     protected $table="client_status_history";
     protected $fillable = [
+        'category_id',
         'client_id',
         'file_name',
         'status_history',

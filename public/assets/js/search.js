@@ -46,6 +46,8 @@ function searchClientWithType(route, csrf) {
     // Populate input fields when a suggestion is selected
     $('#search-box').on('typeahead:select', function (e, suggestion) {
         $('#client_id').val(suggestion.id);
+        $('#category_id').val(suggestion.category_id);
+        $(this).closest('form').submit();
     });
 
 

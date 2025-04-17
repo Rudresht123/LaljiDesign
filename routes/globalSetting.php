@@ -22,6 +22,8 @@ use App\Http\Controllers\user\RegistrationController;
 use App\Http\Middleware\RolePermissionMiddleware;
 use App\Http\Controllers\gloalsetting\DeleteRecord;
 use App\Http\Controllers\GetSelectBoxDataListController;
+use App\Http\Controllers\user\CopyRight\CopyRightController;
+
 // Session Controller Start here
 Route::get('admin/global-setting/financialYear',[FinancialYear::class,'index'])->name('admin.global-setting.financialYear')->middleware(['auth','verified',RolePermissionMiddleware::class]);
 Route::post('admin/global-setting/financialYear',[FinancialYear::class,'store'])->name('admin.global-setting.create-financialYear')->middleware(['auth','verified']);
@@ -119,6 +121,12 @@ Route::post('admin/attorney/category/addTrademarkFormData',[RegistrationControll
 Route::post('admin/attorney/category/updateTrademarkFormData/{id}',[RegistrationController::class,'updateClientDetails'])->name('admin.attorney.updatetrademarkformdata')->middleware(['auth','verified']);
 Route::get('admin/attorney/category/client-details/category/{category_slug}/id/{id}', [RegistrationController::class, 'clientsDetails'])->name('admin.attorney.clientDetails')->middleware(['auth', 'verified',RolePermissionMiddleware::class]);
 Route::get('admin/attorney/{attoerny_id}/category/edit-client-details/category/{category_slug}/id/{id}', [RegistrationController::class, 'editClientDetails'])->name('admin.attorney.edit-clientDetails')->middleware(['auth', 'verified',RolePermissionMiddleware::class]);
+
+
+
+
+// User Registration Controller CopyRight
+Route::post('admin/attorney/category/CopyRightUser',[CopyRightController::class,'addCopyRightUser'])->name('admin.attorney.addcopyRightUser')->middleware(['auth','verified']);
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CopyRight\CopyRightUserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserPermissionModel;
@@ -30,6 +31,11 @@ class AttorneysModel extends Record
     public function trademarkUsers()
 {
     return $this->hasMany(TrademarkUserModel::class, 'attorney_id'); 
+}
+
+public function copyRightUsers()
+{
+    return $this->hasMany(CopyRightUserModel::class, 'attorney_id'); 
 }
 public function permissions()
 {

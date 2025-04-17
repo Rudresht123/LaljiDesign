@@ -15,7 +15,7 @@ class DownloadExcels extends Controller
     {
         $idArray = explode(',', $ids);
 
-        // Fetch data filtered by category and IDs
+    
         $query = (new CommanRepository())->getAllData($category)
             ->whereIn('id', $idArray)
             ->get();

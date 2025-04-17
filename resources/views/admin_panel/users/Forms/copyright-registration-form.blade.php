@@ -1,4 +1,6 @@
-<fieldset class="form-fieldset">
+<form action="{{ route('admin.attorney.addcopyRightUser') }}"  method="POST">
+    @csrf
+    <fieldset class="form-fieldset">
         <legend>Basic Information</legend>
         <div class="row p-0 p-md-4">
 
@@ -20,7 +22,7 @@
             <div class="col-sm-4">
                 <label for="" class="form-label">Office<span
                         class="text-danger">*</span></label>
-                <select name="office_id" class="form-select" required id="office_id">
+                <select name="office_id" class="form-control select2 " required id="office_id">
                     <option value="">**Please Office Name...</option>
                     @foreach ($offices as $office)
                     <option value="{{ $office->id ? $office->id : '' }}">
@@ -102,8 +104,8 @@
                 'id' => 'status',
                 'required'=>'required',
                 'selectid' => $client['status'] ?? '',
-                'class' => 'form-select status input-sm select-box',
-                'name' => 'status[]',
+                'class' => 'form-control select2  status input-sm select-box',
+                'name' => 'status',
                 'statuss'=>$statuss,
                 'data' => ['for' => 'sub-status', 'this_id' => 'status', 'get' => 'substatus']])
 
@@ -111,7 +113,7 @@
             </div>
             <div class="col-sm-4">
                 <label for="" class="form-label">Sub-Status</label>
-                <select name="sub_status" id="sub-status" class="form-select "
+                <select name="sub_status" id="sub-status" class="form-control select2 "
                     id="">
                     <option value="">--Please Select--</option>
                 </select>
@@ -246,3 +248,57 @@
                 </select>
             </div>
     </fieldset>
+
+
+    <!-- contact infomation balde file -->
+    @include('admin_panel.users.Forms.FormsTemplate.ContactInformation')
+    <!-- contact infomation balde file -->
+
+
+
+
+    <!-- consultant infomation balde file -->
+    @include('admin_panel.users.Forms.FormsTemplate.ConsultantInformation')
+    <!-- consultant infomation balde file -->
+
+
+       <!-- consultant infomation balde file -->
+       @include('admin_panel.users.Forms.FormsTemplate.ClientCommunicationInformation')
+    <!-- consultant infomation balde file -->
+
+
+
+    <div class="row mt-3">
+        <div class="col-lg-6">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="confirmCheckForm">
+                <label class="form-check-label fs-12" for="flexCheckDefault">
+                    <span class="text-danger">*</span> Please complete the form and click on the checkbox to confirm your submission.
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-6  d-flex justify-content-end">
+            <input type="reset" value="Reset" class="btn me-2 btn-danger  px-5 py-2">
+            <input type="submit" value="Submit" id="SubmitCopyRightForm"  class="btn btn-primary px-5 py-2">
+        </div>
+    </div>
+</form>
+
+{{-- script for the validations --}}
+<script type="text/javascript">
+    document.getElementById("SubmitCopyRightForm").addEventListener("submit", function(event) {
+        const selectBoxIds = ["office_id", "trademarkclass", "status", 'consultant', 'deal_with'];
+        if (!validateSelectBoxes(selectBoxIds)) {
+            event.preventDefault();
+        }
+    });
+
+    $(document).ready(function() {
+        const checkbox = $('#confirmCheckForm');
+        const trademarkFormSubmit = $('#SubmitCopyRightForm');
+        trademarkFormSubmit.prop('disabled', !checkbox.is(':checked'));
+        checkbox.on('change', function() {
+            trademarkFormSubmit.prop('disabled', !this.checked);
+        });
+    });
+</script>

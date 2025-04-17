@@ -89,19 +89,13 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="form-label">Select Main Category</label>
-                                <div class="custom-select">
-                                    <button type="button" class="dropdown-btn">Select options</button>
-                                    <div class="select-items">
-                                        <label><input type="checkbox" class="select-all"> Select All</label>
-                                        @foreach ($mcategories as $mcate)
-                                        <label>
-                                            <input type="checkbox" name="maincategory[]" value="{{ $mcate->id }}"
-                                                class="option-checkbox">
-                                            {{ $mcate->category_name }}
-                                        </label>
-                                        @endforeach
-                                    </div>
-                                </div>
+                                <select name="maincategory" id="main_category" class="form-select">
+                                    <option value="">Select Category</option>
+                                    @foreach ($mcategories as $mcate)
+                                    <option value="{{ $mcate->id }}">{{ $mcate->category_name ?? '' }}</option>
+                                    @endforeach
+                                </select>
+
                             </div>
                         </div>
 
@@ -128,12 +122,12 @@
                         <!-- Unique Date Fields -->
                         <div class="col-sm-3">
                             <label class="form-label">Start Date</label>
-                            <input type="text" name="start" value="{{ old('start') }}"
+                            <input type="text" name="start_date" value="{{ old('start') }}"
                                 class="form-control datepicker" placeholder="Start Date">
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label">End Date</label>
-                            <input type="text" name="from" value="{{ old('from') }}"
+                            <input type="text" name="end_date" value="{{ old('from') }}"
                                 class="form-control datepicker" placeholder="End Date">
                         </div>
 
@@ -262,264 +256,267 @@
 </div>
 {{-- edit status modal end here --}}
 
-            {{-- import excel data modal end here --}}
+{{-- import excel data modal end here --}}
 
-            {{-- edit status start here --}}
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $('#clientTable').on('click', '.editStatus', function(e) {
-                        e.preventDefault();
+{{-- edit status start here --}}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#clientTable').on('click', '.editStatus', function(e) {
+            e.preventDefault();
 
-                        // Get client ID, category ID, and category slug from data attributes
-                        let clientId = $(this).data('id');
-                        let cattId = $(this).data('category-id');
-                        let category_slug = $(this).data('category-slug');
+            // Get client ID, category ID, and category slug from data attributes
+            let clientId = $(this).data('id');
+            let cattId = $(this).data('category-id');
+            let category_slug = $(this).data('category-slug');
 
-                        // Prepare form data as an object
-                        let formData = {
-                            clientId: clientId,
-                            categoryId: cattId,
-                            categorySlug: category_slug,
-                            _token: "{{ csrf_token() }}" // Include CSRF token for security
-                        };
+            // Prepare form data as an object
+            let formData = {
+                clientId: clientId,
+                categoryId: cattId,
+                categorySlug: category_slug,
+                _token: "{{ csrf_token() }}" // Include CSRF token for security
+            };
 
-                        console.log(formData); // Check if data is being prepared correctly
+            console.log(formData); // Check if data is being prepared correctly
 
-                        // Get the route URL using Laravel's route helper
-                        let route = "{{ route('admin.getClientDataForUpdate') }}";
+            // Get the route URL using Laravel's route helper
+            let route = "{{ route('admin.getClientDataForUpdate') }}";
 
-                        // Make AJAX POST request
-                        $.ajax({
-                            url: route,
-                            type: "POST",
-                            data: formData,
-                            success: function(response) {
-                                console.log(response); // Log the entire response to see its structure
+            // Make AJAX POST request
+            $.ajax({
+                url: route,
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    console.log(response); // Log the entire response to see its structure
 
-                                // Check if clientDetails exists in the response
-                                if (response.clientDetails) {
-                                    // Set form values based on response
-                                    $('input[name="clientId"]').val(response.clientDetails.id);
-                                    $('input[name="main_category_slug"]').val(response.clientDetails.main_category
-                                        .category_slug);
+                    // Check if clientDetails exists in the response
+                    if (response.clientDetails) {
+                        // Set form values based on response
+                        $('input[name="clientId"]').val(response.clientDetails.id);
+                        $('input[name="main_category_slug"]').val(response.clientDetails.main_category
+                            .category_slug);
 
-                                    $('select[name="updateStatusMainCategory"]').val(response
-                                        .clientDetails.category_id);
-                                    if (response.clientDetails.sub_category) {
-                                        $('select[name="clientstatus"]').val(response.clientDetails
-                                            .sub_category);
-                                    }
-                                    $('#clientFileName').text(response.clientDetails
-                                        .)
-                                    $('#editStatusModal').modal(
-                                        'show'); // Show modal after populating the form
-                                } else {
-                                    console.error('Unexpected response structure:', response);
-                                }
-                            },
-                            error: function(xhr) {
-                                $('#ld').hide(); // Hide loader on error
-                                $('#overlay').hide(); // Hide overlay on error
-                                if (xhr.status === 422) {
-                                    const errors = xhr.responseJSON.errors;
-                                    let errorMessages = '<ul>'; // Start the unordered list
-                                    for (const field in errors) {
-                                        errorMessages += '<li>' + errors[field][0] +
-                                            '</li>'; // Show first error message for each field
-                                    }
-                                    errorMessages += '</ul>'; // Close the unordered list
-                                    Swal.fire({
-                                        title: 'Validation Errors',
-                                        html: errorMessages, // Display errors as a list
-                                        icon: 'error',
-                                        confirmButtonText: 'Okay'
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'An error occurred: ' + xhr.responseText,
-                                        icon: 'error',
-                                        confirmButtonText: 'Okay'
-                                    });
-                                    console.error(xhr); // Optional: Log the error for debugging
-                                }
-                            }
-                        });
-                    });
-                });
-            </script>
-
-
-            {{-- export data code start here --}}
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $('#exportClientsData').on('click', function(e) {
-                        e.preventDefault();
-                        $('#ld').show();
-                        $('#overlay').show();
-
-                        let formData = $('#fillterFormData').serialize();
-
-                        $.ajax({
-                            url: "{{ route('admin.excels-import.clients-export') }}",
-                            type: "POST",
-                            data: formData,
-                            xhrFields: {
-                                responseType: 'blob' // Important for downloading a file
-                            },
-                            success: function(response, status, xhr) {
-
-                                // Get the filename from Content-Disposition header
-                                let filename = "";
-                                let disposition = xhr.getResponseHeader('Content-Disposition');
-                                if (disposition && disposition.indexOf('attachment') !== -1) {
-                                    let matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(
-                                        disposition);
-                                    if (matches != null && matches[1]) {
-                                        filename = matches[1].replace(/['"]/g, '');
-                                    }
-                                }
-
-                                // Create a link element for download
-                                let link = document.createElement('a');
-                                let url = window.URL.createObjectURL(response);
-                                link.href = url;
-                                link.download = filename ? filename :
-                                    'exported_data.xlsx'; // Fallback filename
-                                document.body.appendChild(link);
-                                link.click();
-                                window.URL.revokeObjectURL(url);
-                                link.remove();
-                                $('#ld').hide();
-                                $('#overlay').hide();
-                                // Show SweetAlert success message
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'Your Excel file has been downloaded.',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                });
-                            },
-                            error: function() {
-                                $('#ld').hide();
-                                $('#overlay').hide();
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Something went wrong during the export.',
-                                    icon: 'error',
-                                    confirmButtonText: 'OK'
-                                });
-                            }
-                        });
-                    });
-
-                });
-            </script>
-
-            <script type="text/javascript">
-                $('#fillterFormData').on('submit', function(e) {
-                    e.preventDefault(); // Prevent default form submission
-                    let route = "{{ route('admin.getFiellterClientsData') }}";
-                    let csrftoken = {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    };
-                    let headingColumns = @json($columns);
-                    clientData(route, csrftoken, headingColumns);
-
-                });
-                // datatable for client reports
-                function clientData(route, csrftoken, headingColumns) {
-                    // Destroy existing DataTable if it exists
-                    if ($.fn.dataTable.isDataTable('#clientTable')) {
-                        $('#clientTable').DataTable().destroy();
-                        $('#clientTable').empty(); // Clear table content
-                        $('#clientTable').html('<thead></thead><tbody></tbody>'); // Re-add thead and tbody
-                    }
-
-                    // Retrieve selected columns
-                    var selectedColumns = $('input[name="column[]"]:checked').map(function() {
-                        return this.value;
-                    }).get();
-
-                    // Default columns configuration
-                    var columnsConfig = [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false
-                    }, ];
-
-                    // Ensure at least one column is selected
-                    if (selectedColumns.length === 0) {
-                        alert('Please select at least one column to display.');
-                        return;
-                    }
-
-                    var tableHeadings = ['Sr. No.'];
-                    headingColumns.forEach(function(column) {
-                        if (selectedColumns.includes(column.column_name)) {
-                            columnsConfig.push({
-                                data: column.column_name,
-                                name: column.column_name
-                            });
-                            tableHeadings.push(column.excelcolumn_name);
+                        $('select[name="updateStatusMainCategory"]').val(response
+                            .clientDetails.category_id);
+                        if (response.clientDetails.sub_category) {
+                            $('select[name="clientstatus"]').val(response.clientDetails
+                                .sub_category);
                         }
-                    });
+                        $('#clientFileName').text(response.clientDetails
+                            .)
+                        $('#editStatusModal').modal(
+                            'show'); // Show modal after populating the form
+                    } else {
+                        console.error('Unexpected response structure:', response);
+                    }
+                },
+                error: function(xhr) {
+                    $('#ld').hide(); // Hide loader on error
+                    $('#overlay').hide(); // Hide overlay on error
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        let errorMessages = '<ul>'; // Start the unordered list
+                        for (const field in errors) {
+                            errorMessages += '<li>' + errors[field][0] +
+                                '</li>'; // Show first error message for each field
+                        }
+                        errorMessages += '</ul>'; // Close the unordered list
+                        Swal.fire({
+                            title: 'Validation Errors',
+                            html: errorMessages, // Display errors as a list
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred: ' + xhr.responseText,
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        });
+                        console.error(xhr); // Optional: Log the error for debugging
+                    }
+                }
+            });
+        });
+    });
+</script>
 
-                    // Add Actions column
-                    columnsConfig.push({
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    });
-                    tableHeadings.push('Actions');
 
-                    // Update <thead> with new headings
-                    var theadHtml = '<tr>';
-                    tableHeadings.forEach(function(heading) {
-                        theadHtml += `<th class="fw-bold bg-light">${heading}</th>`;
-                    });
-                    theadHtml += '</tr>';
-                    $('#clientTable thead').html(theadHtml);
+{{-- export data code start here --}}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#exportClientsData').on('click', function(e) {
+            e.preventDefault();
+            $('#ld').show();
+            $('#overlay').show();
 
-                    // Initialize DataTable
-                    $('#clientTable').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        responsive: true,
-                        lengthMenu: [10, 25, 50, 100, 200, 500, 1000, 2000],
-                        lengthChange: true,
-                        language: {
-                            searchPlaceholder: 'Search...',
-                            sSearch: '',
-                            lengthMenu: '_MENU_ items/page',
-                        },
-                        ajax: {
-                            url: route,
-                            type: "POST",
-                            headers: csrftoken,
-                            data: function(d) {
-                                d.attorney_id = $('input[name="attorney_id[]"]:checked').map(function() {
-                                    return this.value;
-                                }).get();
-                                d.maincategory = $('input[name="maincategory[]"]:checked').map(function() {
-                                    return this.value;
-                                }).get();
-                                d.status = $('input[name="status[]"]:checked').map(function() {
-                                    return this.value;
-                                }).get();
-                                d.start_date = $('input[name="start_date"]').val() || null;
-                                d.end_date = $('input[name="end_date"]').val() || null;
-                            },
-                            error: function(xhr, error, thrown) {
-                                console.error("Ajax error:", xhr.responseText || "Unknown error occurred");
-                            }
-                        },
-                        columns: columnsConfig,
-                        order: [
-                            [1, 'asc']
-                        ],
+            let formData = $('#fillterFormData').serialize();
+
+            $.ajax({
+                url: "{{ route('admin.excels-import.clients-export') }}",
+                type: "POST",
+                data: formData,
+                xhrFields: {
+                    responseType: 'blob' // Important for downloading a file
+                },
+                success: function(response, status, xhr) {
+
+                    // Get the filename from Content-Disposition header
+                    let filename = "";
+                    let disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        let matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(
+                            disposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    // Create a link element for download
+                    let link = document.createElement('a');
+                    let url = window.URL.createObjectURL(response);
+                    link.href = url;
+                    link.download = filename ? filename :
+                        'exported_data.xlsx'; // Fallback filename
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(url);
+                    link.remove();
+                    $('#ld').hide();
+                    $('#overlay').hide();
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your Excel file has been downloaded.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function() {
+                    $('#ld').hide();
+                    $('#overlay').hide();
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong during the export.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
                     });
                 }
-            </script>
-            @endsection
+            });
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#fillterFormData').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            let route = "{{ route('admin.getFiellterClientsData') }}";
+
+            let csrftoken = {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            };
+            let headingColumns = @json($columns);
+            clientData(route, csrftoken, headingColumns);
+
+        });
+        // datatable for client reports
+        function clientData(route, csrftoken, headingColumns, categoryId) {
+
+            // Destroy existing DataTable if it exists
+            if ($.fn.dataTable.isDataTable('#clientTable')) {
+                $('#clientTable').DataTable().destroy();
+                $('#clientTable').empty(); // Clear table content
+                $('#clientTable').html('<thead></thead><tbody></tbody>'); // Re-add thead and tbody
+            }
+
+            // Retrieve selected columns
+            var selectedColumns = $('input[name="column[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            // Default columns configuration
+            var columnsConfig = [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false
+            }, ];
+
+            // Ensure at least one column is selected
+            if (selectedColumns.length === 0) {
+                alert('Please select at least one column to display.');
+                return;
+            }
+
+            var tableHeadings = ['Sr. No.'];
+            headingColumns.forEach(function(column) {
+                if (selectedColumns.includes(column.column_name)) {
+                    columnsConfig.push({
+                        data: column.column_name,
+                        name: column.column_name
+                    });
+                    tableHeadings.push(column.excelcolumn_name);
+                }
+            });
+
+            // Add Actions column
+            columnsConfig.push({
+                data: 'actions',
+                name: 'actions',
+                orderable: false,
+                searchable: false
+            });
+            tableHeadings.push('Actions');
+
+            // Update <thead> with new headings
+            var theadHtml = '<tr>';
+            tableHeadings.forEach(function(heading) {
+                theadHtml += `<th class="fw-bold bg-light">${heading}</th>`;
+            });
+            theadHtml += '</tr>';
+            $('#clientTable thead').html(theadHtml);
+
+            // Initialize DataTable
+            $('#clientTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                lengthMenu: [10, 25, 50, 100, 200, 500, 1000, 2000],
+                lengthChange: true,
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    lengthMenu: '_MENU_ items/page',
+                },
+                ajax: {
+                    url: route,
+                    type: "POST",
+                    headers: csrftoken,
+                    data: function(d) {
+                        d.attorney_id = $('input[name="attorney_id[]"]:checked').map(function() {
+                            return this.value;
+                        }).get();
+                        d.status = $('input[name="status[]"]:checked').map(function() {
+                            return this.value;
+                        }).get();
+                        d.start_date = $('input[name="start_date"]').val() || null;
+                        d.end_date = $('input[name="end_date"]').val() || null;
+                        d.maincategory = $('#main_category').val() ?? null;
+
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.error("Ajax error:", xhr.responseText || "Unknown error occurred");
+                    }
+                },
+                columns: columnsConfig,
+                order: [
+                    [1, 'asc']
+                ],
+            });
+        }
+    });
+</script>
+@endsection

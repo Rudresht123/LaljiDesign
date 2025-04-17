@@ -17,37 +17,23 @@
 
 @if (session('success'))
 <script>
-    var successMessage = '{{ session('
-    success ') }}';
+    var successMessage = @json(session('success'));
     Swal.fire({
         icon: 'success',
         title: 'Success!',
         text: successMessage,
-        showConfirmButton: true, // Show the confirm button
-        confirmButtonText: 'OK' // Custom text for the button
+        showConfirmButton: true,
+        confirmButtonText: 'OK'
     });
 </script>
 @endif
 
-@if (session('error'))
-<script>
-    var errorMessage = '{{ session('
-    error ') }}';
-    Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: errorMessage,
-        showConfirmButton: true, // Show the confirm button
-        confirmButtonText: 'OK' // Custom text for the button
-    });
-</script>
-@endif
 
 @if ($errors->any())
 <script>
     var validationErrors = '<ul>';
-    @foreach($errors -> all() as $error)
-    validationErrors += '<li>{{ $error }}</li>';
+    @foreach ($errors->all() as $error)
+        validationErrors += '<li>{{ $error }}</li>';
     @endforeach
     validationErrors += '</ul>';
 
@@ -55,8 +41,8 @@
         icon: 'error',
         title: 'Validation Error',
         html: validationErrors,
-        showConfirmButton: true, // Show the confirm button
-        confirmButtonText: 'OK' // Custom text for the button
+        showConfirmButton: true,
+        confirmButtonText: 'OK'
     });
 </script>
 @endif

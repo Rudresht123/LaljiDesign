@@ -34,6 +34,8 @@ function getOpptionsforStatus(slug) {
 }
 
 function getOpponentApplicantNameNumber(getvalue, slug) {
+ 
+    console.log(getvalue);
     if (slug === 'opposed' || slug === 'rectification_field') {
         if (getvalue === 'Opponent') {
             $('#applicant_name, #applicant_code').css('display', 'block');
@@ -49,6 +51,7 @@ function getOpponentApplicantNameNumber(getvalue, slug) {
         // Hide all fields for slugs other than "opposed" and "rectification_field"
         $('#applicant_name, #applicant_code, #opponent_name, #opponent_code').css('display', 'none');
     }
+ 
 }
 function subStatusHearingDateExaminationReport(slug,substatusSlug) {
 

@@ -12,6 +12,7 @@ use App\Models\FormFieldModel;
 use App\Models\MainCategoryModel;
 use App\Models\OfficesModel;
 use App\Models\ConsultantModel;
+use App\Models\CopyRight\CopyRightUserModel;
 use App\Models\RemarksModel;
 use App\Models\StatusModel;
 use App\Models\SubcategoryModel;
@@ -37,15 +38,21 @@ class RegistrationController extends Controller
             'trademarkUsers as usercount' => function ($query) use ($id) {
                 $query->where('attorney_id', $id);
             }
-        ])->get();
+        ])->where('category_id', MainCategoryModel::where('category_slug', 'trademark')->first()->id)->get();
+
+        $copyrightstatuswisecount = StatusModel::withCount([
+            'copyrightusers as usercount' => function ($query) use ($id) {
+                $query->where('attorney_id', $id);
+            }
+        ])->where('category_id', MainCategoryModel::where('category_slug', 'copyright')->first()->id)->get();
 
 
         $totalCount = TrademarkUserModel::where('attorney_id', $id)->count();
-        return view('admin_panel.users.category', compact('attorney', 'mainCategory', 'statuswisecount', 'totalCount'));
+        $copyRighttotalCount = CopyRightUserModel::where('attorney_id', $id)->count();
+        return view('admin_panel.users.category', compact('attorney', 'mainCategory', 'statuswisecount', 'copyrightstatuswisecount', 'totalCount', 'copyRighttotalCount'));
     }
     public function registrationForm($attorneyId, $categorySlug)
     {
-
         $attorney = (new GlobalSettingRepo())->attorneys(['id' => $attorneyId])->first();
         $category = (new GlobalSettingRepo())->maincategory(['category_slug' => $categorySlug])->first();
         $classes = TradeMarkClassModel::get();
@@ -89,6 +96,7 @@ class RegistrationController extends Controller
         if ($TrademarkUser->save()) {
 
             StatusHistory::create([
+                'category_id' => $request->category_id,
                 'client_id' => $TrademarkUser->id,
                 'file_name' => $request->input('file_name'),
                 'status_history' => json_encode([
@@ -109,7 +117,6 @@ class RegistrationController extends Controller
 
     public function clientsDetails($category_slug, $id)
     {
-
         if ($category_slug === 'trademark') {
             $clientdetail = TrademarkUserModel::with([
                 'attorney:id,attorneys_name',
@@ -126,15 +133,41 @@ class RegistrationController extends Controller
             ])
                 ->where('id', $id)
                 ->first();
-            return view('admin_panel.users.clientdetails', compact('clientdetail'));
+        } elseif ($category_slug === 'copyright') {
+
+            $clientdetail = CopyRightUserModel::with([
+                'attorney:id,attorneys_name',
+                'mainCategory:id,category_name,category_slug',
+                'office:id,office_name',
+                'statusMain:id,status_name',
+                'subStatus:id,substatus_name',
+                'remarksMain:id,remarks as remarks_name',
+                'clientRemark:id,client_remarks',
+                'Clientonsultant:id,consultant_name',
+                'dealWith:id,dealler_name',
+                'financialYear:id,financial_session',
+                'subCategory:id,subcategory'
+            ])
+                ->where('id', $id)
+                ->first();
+        } else {
         }
+        return view('admin_panel.users.clientdetails', compact('clientdetail'));
     }
+
 
     public function editClientDetails($attorneyId, $categorySlug, $id)
     {
         $attorney = AttorneysModel::find($attorneyId);
-
-        $client = TrademarkUserModel::where('id', $id)->first();
+        $category=MainCategoryModel::where('category_slug',$categorySlug)->first();
+        $statuss = StatusModel::where('status', 'yes')->where('category_id',$category->id)->get();
+        if($categorySlug=='trademark'){
+            $client = TrademarkUserModel::where('id', $id)->first();
+        }
+        elseif($categorySlug=='copyright'){
+            $client = CopyRightUserModel::where('id', $id)->first();
+        }
+       
         $category = MainCategoryModel::where('category_slug', $categorySlug)->where('status', 'yes')->first();
         $classes = TradeMarkClassModel::get();
         $offices = OfficesModel::where('status', 'yes')->get();
@@ -142,8 +175,6 @@ class RegistrationController extends Controller
         $clientRemarks = ClientRemarksModel::where('status', 'yes')->get();
         $consultant = ConsultantModel::where('status', 'yes')->get();
         $dealWith = DeallerModel::where('status', 'yes')->get();
-
-        $statuss = StatusModel::where('status', 'yes')->get();
         $subcategory = SubcategoryModel::where('status', 'yes')->get();
 
         return view('admin_panel.users.editClientdetails', compact('client', 'attorney', 'category', 'classes', 'statuss', 'remarks', 'offices', 'clientRemarks', 'consultant', 'subcategory', 'dealWith'));

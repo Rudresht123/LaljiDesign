@@ -15,8 +15,8 @@
                 <div class="form-group mb-0 w-75">
                     <div class="search-form">
                         <input hidden id="client_id" name="client_id" type="text" class="form-control" placeholder="Search here...">
+                        <input hidden id="category_id" name="category_id" type="text" class="form-control" placeholder="Search here...">
                         <input id="search-box" type="text" class="form-control" placeholder="Search here...">
-
                         <button class="btn" type="submit"><i data-feather="search"></i></button>
                     </div>
                 </div>

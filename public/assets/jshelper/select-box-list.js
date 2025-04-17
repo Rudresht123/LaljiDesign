@@ -32,16 +32,13 @@ $(".select-box").on('focus', function () {
         }
         var url = "/GetSelectBoxDataList/" + $(this).data('get') + "?" + $(this).data('this_id') + "=" + $(this).val() + url_request;
 
-        document.getElementById("ld").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+        loader('block');
 
         $.ajax({
             url: url,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log("AJAX Success:", data);
-
                 var result = data;
 
                 if (result) {
@@ -55,8 +52,7 @@ $(".select-box").on('focus', function () {
 
 
                 // Hide loader
-                document.getElementById("ld").style.display = "none";
-                document.getElementById("overlay").style.display = "none";
+              loader('none');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("AJAX Error: ", textStatus, errorThrown);
